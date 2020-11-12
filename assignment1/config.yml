@@ -1,0 +1,15 @@
+seed: 50
+
+vocab:
+    tokenizer: "word-en"
+    output_path: "char-en"
+    corpus:
+        ["", ""]
+    size: 10000
+    min_freq: -1
+
+    spm:
+        output_path: ""
+        model_type: bpe
+        model_name: spm
+
