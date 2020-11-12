@@ -4,7 +4,10 @@ vocab:
     tokenizer: "word-en"
     output_path: "char-en"
     corpus:
-        ["", ""]
+        ["junglebook.txt",
+        "kingjamesbible_tokenized.txt"
+        ]
+
     size: 10000
     min_freq: -1
 
