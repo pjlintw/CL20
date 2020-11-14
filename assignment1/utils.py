@@ -23,6 +23,20 @@ def load_config(args):
     return config
 
 
+def get_raw_dir(path, config):
+    raw_dir = config['data']['raw_path']
+    if not os.path.isdir(raw_dir):
+        os.makedirs(raw_dir)
+    return os.path.join(os.getcwd(), raw_dir, path)
+
+
+def get_processed_dir(path, config):
+    processed_dir = config['data']['processed_path']
+    if not os.path.isdir(processed_dir):
+        os.makedirs(processed_dir)
+    return os.path.join(os.getcwd(), processed_dir, path)
+
+
 def create_dir(path):
     """Savely creating recursive directories"""
     if not isinstance(path, Path):

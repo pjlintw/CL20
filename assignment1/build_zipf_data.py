@@ -1,8 +1,8 @@
-"""Precessing, build vocabulary and data."""
+"Precessing, build vocabulary and data."""
 
 import os
 import errno
-from utils import get_args, load_config
+from utils import get_args, load_config, get_raw_dir, get_processed_dir
 
 import logging
 
@@ -60,8 +60,9 @@ def main():
 
             # sort it    
             sortedDict = {k: v for k, v in sorted(tok2freq.items(), key=lambda item: item[1], reverse=True)}
-            output_file = get_file_name(path) + '.txt'
-            
+            output_file = 'src-' + get_file_name(path) + '.txt'
+            output_file = get_processed_dir(output_file, config)
+
             # save word frequency file
             save_word_freq_from_dict(sortedDict, output_file)
 

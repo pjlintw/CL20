@@ -1,8 +1,8 @@
 seed: 50
 
 data:
-    raw_path: datasets/raw/
-    processed_path: datasets/processed/
+    raw_path: "datasets/raw/"
+    processed_path: "datasets/processed/"
 
 
 vocab:
