@@ -21,3 +21,15 @@ def load_config(args):
         config = yaml.load(f, Loader=yaml.FullLoader)
 
     return config
+
+
+def create_dir(path):
+    """Savely creating recursive directories"""
+    if not isinstance(path, Path):
+        path = Path(path)
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+        print('Created directory: {}'.format(path))
+    else:
+        print('Directory {} already exists.'.format(path))

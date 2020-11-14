@@ -1,11 +1,17 @@
 seed: 50
 
+data:
+    raw_path: datasets/raw/
+    processed_path: datasets/processed/
+
+
 vocab:
     tokenizer: "word-en"
     output_path: "char-en"
     corpus:
         ["data/junglebook.txt",
-        "data/kingjamesbible_tokenized.txt"
+        "data/kingjamesbible_tokenized.txt",
+        "kdosdkos"
         ]
 
     size: 10000
