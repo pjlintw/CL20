@@ -2,7 +2,7 @@
 
 import os
 import errno
-from utils import get_args, load_config, get_raw_dir, get_processed_dir
+from utils import *
 
 import logging
 
@@ -19,12 +19,6 @@ def save_word_freq_from_dict(d, output_path):
         {f.write(f'{k} {v}\n') for k,v in d.items()}
         completed_path = os.path.join(os.getcwd(), output_path)
         logger.info('Created file to {}'.format(completed_path))
-
-
-def get_file_name(path):
-    file_path = os.path.splitext(path)
-    file_name = file_path[0].split('/')[-1]
-    return file_name
 
 
 def main():

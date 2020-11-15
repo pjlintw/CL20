@@ -23,6 +23,19 @@ def load_config(args):
     return config
 
 
+def get_file_name(path, last_seq=False):
+    """Strip repositories and file extension.
+
+    Args:
+      path: file path.
+      last_seq: if true, return the last seqment of file name.
+    """
+
+    file_path = os.path.splitext(path)
+    file_name = file_path[0].split('/')[-1]
+    return file_name
+
+
 def get_raw_dir(path, config):
     raw_dir = config['data']['raw_path']
     if not os.path.isdir(raw_dir):
