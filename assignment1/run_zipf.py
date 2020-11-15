@@ -6,7 +6,10 @@ import shutil
 from pprint import pprint
 import matplotlib.pyplot as plt
 
+import re
+import numpy as np
 import random
+
 
 def plot_frequency_curve(x_axis, y_axis, _plot_img):
     """Plot weakly connected components size distributions
@@ -14,18 +17,18 @@ def plot_frequency_curve(x_axis, y_axis, _plot_img):
     :param _plot_img: WCC size distribution image (log-log plot)
     :return:
     """
-    # fig = plt.figure(figsize=(14, 12))
-    fig, ax1 = plt.subplots(figsize=(14,12))
+    
+    fig, axs = plt.subplots(2, 1, figsize=(9, 3))
 
-    ax1.semilogy(x_axis, y_axis)
-    ax1.set(title='semilogy')
-    ax1.grid()
+    axs[0].plot(x_axis, y_axis)
 
+    axs[1].loglog(x_axis, y_axis)
+    axs[1].set_xlabel('rank', fontsize=14, fontweight='bold')
+    axs[1].set_ylabel('word frequency', fontsize=14, fontweight='bold')
+    plt.grid(True)
     plt.title("Zipf's Law")
-    plt.xlabel("Rank")
-    plt.ylabel("Word Frequency")
 
-    fig.tight_layout()
+    # fig.tight_layout()
     plt.savefig(_plot_img)
     print("saved image in {}".format(_plot_img))
 
@@ -34,9 +37,7 @@ def main():
     # get config
     args = get_args()
     config = load_config(args)
-    pprint(config)
 
-    rng = random.Random(123)
     # save config
 
     # load data
@@ -44,32 +45,20 @@ def main():
         # corpus_name 
         file_prefix = get_file_name(path, last_seq=True)
         img_output = 'freq-' + file_prefix + '.jpeg'
-        print(img_output)
         # img_output = ''.join('freq-', path.split('-')[1:])
         path = get_processed_dir(path ,config)
         word_rank = list()
         word_freq = list()
         with open(path, 'r', encoding='utf-8') as f:    
-            l = 0
             for line in f.readlines():
                 line = line.strip()
                 word, freq = line.split()
-                
-                #print(type(word))
-                #print('freq', type(freq))
-                word_rank.append(word)
+                freq = int(freq)                
                 word_freq.append(freq)
                 
-                l += 1
-                if l == 50:
-                    break
-
-        print(len(word_rank))
-        print(len(word_freq))
-        word_rank = [ i+1 for i in range(len(word_freq,), 0, -1)]
-        
-        plot_frequency_curve(x_axis=word_freq, 
-                             y_axis=word_rank,
+        word_rank = [ i+1 for i in range(len(word_freq))]
+        plot_frequency_curve(x_axis=word_rank, 
+                             y_axis=word_freq,
                              _plot_img=img_output)
 
 

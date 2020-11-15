@@ -13,6 +13,7 @@ logging.basicConfig(level=logging.INFO,
 
 logger = logging.getLogger()
 
+import string
 
 def save_word_freq_from_dict(d, output_path):
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -44,6 +45,7 @@ def main():
                     continue
                 
                 line = line.lower().strip()
+                line = line.translate(str.maketrans('','', string.punctuation))
                 for seg in line.split():
                     if seg not in tok2idx:
                         tok2idx[seg] = token_index
