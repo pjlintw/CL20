@@ -1,9 +1,9 @@
 seed: 50
 
 data:
-    raw_path: "datasets/raw/"
-    processed_path: "datasets/processed/"
-
+    raw_path: "datasets/zipf/raw/"
+    processed_path: "datasets/zipf/processed/"
+    output_path: "outputs/"
 
 vocab:
     tokenizer: "word-en"

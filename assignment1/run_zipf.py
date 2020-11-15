@@ -11,26 +11,34 @@ import numpy as np
 import random
 
 
-def plot_frequency_curve(x_axis, y_axis, _plot_img):
+def plot_frequency_curve(x_axis, y_axis, _plot_img=None, _title=None):
     """Plot weakly connected components size distributions
     :param _g: Transaction graph
     :param _plot_img: WCC size distribution image (log-log plot)
     :return:
     """
     
-    fig, axs = plt.subplots(2, 1, figsize=(9, 3))
+    fig, axs = plt.subplots(2, 1, figsize=(14, 12))
 
     axs[0].plot(x_axis, y_axis)
+    axs[0].set_ylabel('word frequency', fontsize=14, fontweight='bold')
+    axs[0].grid(True)
 
     axs[1].loglog(x_axis, y_axis)
     axs[1].set_xlabel('rank', fontsize=14, fontweight='bold')
     axs[1].set_ylabel('word frequency', fontsize=14, fontweight='bold')
-    plt.grid(True)
-    plt.title("Zipf's Law")
+    axs[1].grid(True)
 
-    # fig.tight_layout()
-    plt.savefig(_plot_img)
-    print("saved image in {}".format(_plot_img))
+    if _title is not None:
+        fig_title = f'Zipf\'s law: {_title}'
+    else:
+        fig_title = 'Zipf\s law'
+    
+    fig.suptitle(fig_title, fontsize=20, fontweight='bold')
+
+    if _plot_img is not None:
+        plt.savefig(_plot_img)
+        print("saved image in {}".format(_plot_img))
 
 
 def main():
@@ -59,7 +67,8 @@ def main():
         word_rank = [ i+1 for i in range(len(word_freq))]
         plot_frequency_curve(x_axis=word_rank, 
                              y_axis=word_freq,
-                             _plot_img=img_output)
+                             _plot_img=img_output,
+                             _title=file_prefix)
 
 
 if __name__ == '__main__':

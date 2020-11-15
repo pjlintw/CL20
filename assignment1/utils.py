@@ -30,9 +30,11 @@ def get_file_name(path, last_seq=False):
       path: file path.
       last_seq: if true, return the last seqment of file name.
     """
-
     file_path = os.path.splitext(path)
     file_name = file_path[0].split('/')[-1]
+
+    if last_seq:
+        return file_name.split('-')[-1]
     return file_name
 
 
@@ -49,6 +51,33 @@ def get_processed_dir(path, config):
         os.makedirs(processed_dir)
     return os.path.join(os.getcwd(), processed_dir, path)
 
+
+def timeit(method):
+    """Measuring execution time of method.
+    ```python
+    
+    >>>@timeit
+    >>>def add(x, y):
+           return x + y
+    
+    >>>f(5, 10)
+    f: 0.00095367431640625
+    ```
+
+    Args:
+        method: callable method
+    """
+    def timed(*args, **kw):
+        ts = time.time()
+        result = method(*args, **kw)
+        te = time.time()
+
+        ti_dif = (te - ts) * 1000
+        print('{}: {:.4f} ms'.format(method.__name__, (ti_dif)))
+
+        return result
+
+    return timed
 
 def create_dir(path):
     """Savely creating recursive directories"""
