@@ -16,7 +16,7 @@ class BasicNgram(ConditionalProbDist):
     Be aware that context has to be a tuple, even if context is a unigram (see example below)
     
     >>> corpus=['a','b','b','a']
-    >>> bigram=BasicNgram(2,corpus)
+    >>> bigram=BasicNgram(2,corpus) # pad_right=True
     >>> bigram.contexts()
     [('<$>',), ('a',), ('b',)]
     >>> p_b=bigram[('b',)] #not bigram['b']!!!
@@ -67,5 +67,30 @@ class BasicNgram(ConditionalProbDist):
     """
     def contexts(self):
         return list(self.conditions())
-            
-        
+
+
+def main():
+    corpus=['a','b','b','a']
+    # pad_right = True
+    bigram=BasicNgram(2,corpus)
+    bigram.contexts()
+
+    # [('<$>',), ('a',), ('b',)]
+    # not bigram['b']
+    p_b=bigram[('b',)]
+    print(p_b.prob('a'))
+    # 0.5
+    print(p_b.prob('b'))
+    #0.5
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+
+
