@@ -22,6 +22,13 @@ def load_config(args):
 
     return config
 
+def load_txt(path, readlines=False):
+    with open(path, 'r', encoding='utf-8') as f:
+        if readlines:
+            corpus = f.readlines()
+        else:
+            corpus = f.read() 
+    return corpus
 
 def get_file_name(path, last_seq=False):
     """Strip repositories and file extension.
