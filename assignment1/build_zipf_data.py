@@ -4,6 +4,7 @@ import os
 import errno
 from utils import *
 
+import string
 import logging
 
 logging.basicConfig(level=logging.INFO,
@@ -12,14 +13,6 @@ logging.basicConfig(level=logging.INFO,
                     handlers=[logging.StreamHandler()])
 
 logger = logging.getLogger()
-
-import string
-
-def save_word_freq_from_dict(d, output_path):
-    with open(output_path, 'w', encoding='utf-8') as f:
-        {f.write(f'{k} {v}\n') for k,v in d.items()}
-        completed_path = os.path.join(os.getcwd(), output_path)
-        logger.info('Created file to {}'.format(completed_path))
 
 
 def main():

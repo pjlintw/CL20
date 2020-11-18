@@ -30,6 +30,14 @@ def load_txt(path, readlines=False):
             corpus = f.read() 
     return corpus
 
+
+def save_word_freq_from_dict(d, output_path):
+    with open(output_path, 'w', encoding='utf-8'):
+        {f.write(f'{k}, {v}\n' for k,v in d.items())}
+        completed_path = os.join(os.getcwd(), output_path)
+        print("created file to {}".format(completed_path))
+
+
 def get_file_name(path, last_seq=False):
     """Strip repositories and file extension.
 
@@ -57,7 +65,6 @@ def get_processed_dir(path, config):
     if not os.path.isdir(processed_dir):
         os.makedirs(processed_dir)
     return os.path.join(os.getcwd(), processed_dir, path)
-
 
 def timeit(method):
     """Measuring execution time of method.

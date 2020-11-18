@@ -1,8 +1,8 @@
 seed: 50
 
 data:
-    raw_path: "datasets/zipf/raw/"
-    processed_path: "datasets/zipf/processed/"
+    raw_path: "datasets/pmi/raw/"
+    processed_path: "datasets/pmi/processed/"
     output_path: "outputs/"
 
 vocab:
