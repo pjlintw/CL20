@@ -1,4 +1,4 @@
-"""Build bigram and seqment vocabulary."""
+"""Build bigram and seqment vocabulary. We compute all frequency of terms and seqment pair."""
 
 import os
 import errno
@@ -19,6 +19,9 @@ def main():
     args =get_args()
     config = load_config(args)
     
+    # frequency threshold
+    min_freq = config['data']['min_freq']
+
     # corpus is expected to untokenized sentences
     for path in os.listdir(config['data']['raw_path']):
         path = os.path.join(config['data']['raw_path'], path)
@@ -68,14 +71,15 @@ def main():
                     seq2freq[scd_seq] +=1
 
             if stop_flag == 10:
-                break
-
+                pass
 
             stop_flag += 1
+        
+        # filte out item which occures less than min_frq
+        filtered_dict = {k:v for (k,v) in seq2freq.items(), key=lambda x: x[1] > min_freq}
 
-        print(seq2freq)
-    # remove word and  word pairs
-
+        sorted_dict = {k: v for k, v in sorted(filtered_dict.items(), key=lambda x: x[1], reverse=True)}
+        print(sorted_dict)
 
 
 

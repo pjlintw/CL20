@@ -9,7 +9,8 @@ vocab:
     tokenizer: "word-en"
     output_path: "char-en"
     size: 10000
-    min_freq: -1
+    # frequency less than or include 10 will be discarded
+    min_freq: 10
 
     spm:
         output_path: ""
