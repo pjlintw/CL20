@@ -1,0 +1,19 @@
+seed: 50
+
+data:
+    raw_path: "datasets/zipf/raw/"
+    processed_path: "datasets/zipf/processed/"
+    output_path: "outputs/zipf"
+
+vocab:
+    tokenizer: "word-en"
+    output_path: "char-en"
+    size: 10000
+    # frequency less than or include 10 will be discarded
+    min_freq: 10
+
+    spm:
+        output_path: ""
+        model_type: bpe
+        model_name: spm
+

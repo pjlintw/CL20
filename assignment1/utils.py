@@ -32,9 +32,9 @@ def load_txt(path, readlines=False):
 
 
 def save_word_freq_from_dict(d, output_path):
-    with open(output_path, 'w', encoding='utf-8'):
-        {f.write(f'{k}, {v}\n' for k,v in d.items())}
-        completed_path = os.join(os.getcwd(), output_path)
+    with open(output_path, 'w', encoding='utf-8') as f:
+        { f.write("{}, {}\n".format(k,v)) for k,v in d.items()}
+        completed_path = os.path.join(os.getcwd(), output_path)
         print("created file to {}".format(completed_path))
 
 

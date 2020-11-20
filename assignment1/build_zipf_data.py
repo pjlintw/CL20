@@ -4,6 +4,7 @@ import os
 import errno
 from utils import *
 
+import json
 import string
 import logging
 
@@ -55,13 +56,14 @@ def main():
                     tok2freq[seg] += 1
 
         # sort it    
-        sortedDict = {k: v for k, v in sorted(tok2freq.items(), key=lambda item: item[1], reverse=True)}
-        output_file = 'src-' + get_file_name(path) + '.txt'
+        sorted_dict = {k: v for k, v in sorted(tok2freq.items(), key=lambda item: item[1], reverse=True)}
+        output_file = 'src-' + get_file_name(path) + '.json'
         output_file = get_processed_dir(output_file, config)
 
         logger.info(output_file)
-        # save word frequency file
-        save_word_freq_from_dict(sortedDict, output_file)
+        # dump dict to json
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump(sorted_dict, f, indent=1, ensure_ascii=False)
 
 if __name__ == "__main__":
     main()
