@@ -12,10 +12,13 @@ import random
 
 
 def plot_frequency_curve(x_axis, y_axis, _plot_img=None, _title=None):
-    """Plot weakly connected components size distributions
-    :param _g: Transaction graph
-    :param _plot_img: WCC size distribution image (log-log plot)
-    :return:
+    """Plot line chart and zipf curve.
+
+    Args:
+        x_axis: list of elements on x axis.
+        y_axis: list of elements on y axis.
+        _plot_img: if given, save the image to the path.
+        _title: if given, display it as the title of chart.
     """    
     fig, axs = plt.subplots(2, 1, figsize=(14, 12))
 
