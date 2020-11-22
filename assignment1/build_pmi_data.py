@@ -16,73 +16,57 @@ logger = logging.getLogger()
 
 def main():
     # config
-    args =get_args()
+    args =sget_args()
     config = load_config(args)
     
     # frequency threshold
     min_freq = config['data']['min_freq']
 
+    path = os.listdir(config['data']['raw_path'])[0]
+    path = os.path.join(config['data']['raw_path'], path)
+
     # corpus is expected to untokenized sentences
-    for path in os.listdir(config['data']['raw_path']):
-        path = os.path.join(config['data']['raw_path'], path)
-        corpus = load_txt(path, readlines=True)
-        logger.info(len(corpus))
+    corpus = load_txt(path, readlines=True)
+    
+    
+    # init dictionary for counting bigram and segment
+    num_words = 0
+    seg2freq = dict()
+    for line in corpus:
+        line_lst = line.strip().split()
+        logger.info(line_lst)
+
+        # count number of words
+        num_words += len(line_lst)
+        # count segment frequency
+        for segment in line_lst:
+            seg2freq = add_count_to_dict(segment, seg2freq)
+
+    # count bigram
+    bi2freq = dict()
+    for line in corpus:
+        line_lst = line.strip().split()
+        for idx in range(len(line_lst)-1):
+            seg_pair = tuple(line_lst[idx: idx+2])
+            first_segment, second_segment = seg_pair
+
+            # continue if one of segments has less than min_freq frequnecy
+            first_seg_freq = seg2freq[first_segment]
+            second_seg_freq = seg2freq[second_segment]
+            if first_seg_freq <= min_freq or second_seg_freq <= min_freq:
+                continue
+            else:
+                bi2freq = add_count_to_dict(seg_pair, bi2freq)
+
+    # dict, bigram pairs to pmi socre
+    bigram2pmi = computer_pmi_score(bi2freq, seg2freq, num_words)
+    # convert tuple of string to an string
+    sorted_dict = { ' '.join(list(k)): v for k, v in sorted(bigram2pmi.items(), key=lambda item: item[1], reverse=True)}
+
+    # dump dict to json
+    path = get_processed_dir('pmi_score.json', config)
+    dump_dict_to_json(path, sorted_dict)        
         
-        # create token-index, index-token dict
-        seq_idx = 0
-
-        seq2freq = dict()
-        
-        seq2idx = dict()
-        idx2seq = dict()
-
-        stop_flag = 1
-        for line in corpus:
-            line_lst = line.strip().split()
-            logger.info(line_lst)
-
-            for idx in range(len(line_lst)-1):
-                seq_pair = line_lst[idx:idx+2]
-                seq_pair = tuple(seq_pair)
-                frt_seq, scd_seq = seq_pair
-
-
-                # count frequency of pair and word
-                if seq_pair not in seq2idx:
-                    seq2idx[seq_pair] = seq_idx
-                    seq2freq[seq_pair] = 1
-                    seq_idx += 1
-                else:
-                    seq2freq[seq_pair] += 1
-            
-
-                if frt_seq not in seq2idx:
-                    seq2idx[frt_seq] = seq_idx
-                    seq2freq[frt_seq] = 1
-                    seq_idx += 1
-                else:
-                    seq2freq[frt_seq] += 1
-
-                if scd_seq not in seq2idx:
-                    seq2idx[scd_seq] = seq_idx
-                    seq2freq[scd_seq] = 1
-                    seq_idx += 1
-                else:
-                    seq2freq[scd_seq] +=1
-
-            if stop_flag == 10:
-                pass
-
-            stop_flag += 1
-        
-        # filte out item which occures less than min_frq
-        filtered_dict = {k:v for (k,v) in seq2freq.items(), key=lambda x: x[1] > min_freq}
-
-        sorted_dict = {k: v for k, v in sorted(filtered_dict.items(), key=lambda x: x[1], reverse=True)}
-        print(sorted_dict)
-
-
-
 
 if __name__ == '__main__':
     main()

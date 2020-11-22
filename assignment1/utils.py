@@ -5,7 +5,37 @@ import json
 import time
 import yaml
 import argparse
+import json
+import numpy as np
 from pathlib import Path
+
+def computer_pmi_score(bi2feq, seg2freq, num_words):
+    """Compute pmi score.
+
+    Implement pmi approximation:
+        pmi(w1, w2) ~= log ((count(w1,w2) * num_words) / count(w1) * count(w2))
+
+    Args:
+        bi2freq: dictionary, mapping bigram pair to frequency
+        seg2freq: dictionary, mapping segment to frequency
+        num_words: number of words in the corpus
+    Retrun:
+        bi2pmi: dictionary, tuple of two segments and its pmi socre
+    """
+    bi2pmi = dict()
+
+    for each_bigram in bi2feq:
+        # unpack tuple of tow segments
+        first_segment, second_segment = each_bigram
+        first_seg_freq, second_seg_freq = seg2freq[first_segment], seg2freq[second_segment]
+        denominator = first_seg_freq * second_seg_freq
+
+        bigram_freq = bi2feq[each_bigram]
+        pmi_score = np.log((bigram_freq*num_words) / denominator)
+
+        bi2pmi[each_bigram] = pmi_score
+
+    return bi2pmi
 
 
 def get_args():
@@ -39,11 +69,35 @@ def load_dict_from_json(path):
     return data
 
     
+def dump_dict_to_json(path, dump_dict):
+    # dump dict to json
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(dump_dict, f, indent=1, ensure_ascii=False)
+        print('dump dictionary to : {}'.format(path))
+
+
 def save_word_freq_from_dict(d, output_path):
     with open(output_path, 'w', encoding='utf-8') as f:
         { f.write("{}, {}\n".format(k,v)) for k,v in d.items()}
         completed_path = os.path.join(os.getcwd(), output_path)
         print("created file to {}".format(completed_path))
+
+
+def add_count_to_dict(item, item2freq):
+    """Count frequency of item in dictionary.
+
+    Args:
+        item: key in dictionay
+        item2freq: dictionary object
+    Return:
+        item2freq: dictionary that stores item-frequency
+    """
+
+    if item not in item2freq:
+        item2freq[item] = 1
+    else:
+        item2freq[item] += 1
+    return item2freq
 
 
 def get_file_name(path, last_seq=False):

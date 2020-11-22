@@ -32,7 +32,7 @@ def plot_frequency_curve(x_axis, y_axis, _plot_img=None, _title=None):
     axs[1].grid(True)
 
     if _title is not None:
-        fig_title = f'Zipf\'s law: {_title}'
+        fig_title = 'Zipf\'s law: {}'.format(_title)
     else:
         fig_title = 'Zipf\s law'
     

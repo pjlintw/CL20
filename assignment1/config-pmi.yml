@@ -4,16 +4,6 @@ data:
     raw_path: "datasets/pmi/raw/"
     processed_path: "datasets/pmi/processed/"
     output_path: "outputs/"
-
-vocab:
-    tokenizer: "word-en"
-    output_path: "char-en"
-    size: 10000
-    # frequency less than or include 10 will be discarded
     min_freq: 10
 
-    spm:
-        output_path: ""
-        model_type: bpe
-        model_name: spm
 
