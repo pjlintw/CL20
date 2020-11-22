@@ -1,6 +1,7 @@
 """Implement utilities."""
 
 import os
+import json
 import time
 import yaml
 import argparse
@@ -22,6 +23,7 @@ def load_config(args):
 
     return config
 
+
 def load_txt(path, readlines=False):
     with open(path, 'r', encoding='utf-8') as f:
         if readlines:
@@ -31,6 +33,12 @@ def load_txt(path, readlines=False):
     return corpus
 
 
+def load_dict_from_json(path):
+    with open(path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return data
+
+    
 def save_word_freq_from_dict(d, output_path):
     with open(output_path, 'w', encoding='utf-8') as f:
         { f.write("{}, {}\n".format(k,v)) for k,v in d.items()}
@@ -65,6 +73,7 @@ def get_processed_dir(path, config):
     if not os.path.isdir(processed_dir):
         os.makedirs(processed_dir)
     return os.path.join(os.getcwd(), processed_dir, path)
+
 
 def timeit(method):
     """Measuring execution time of method.

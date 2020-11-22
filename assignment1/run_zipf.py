@@ -1,7 +1,7 @@
 """Visulize Zipf's law with line chart."""
 
 import os
-from utils import get_args, load_config, get_processed_dir, get_file_name
+from utils import *
 import shutil
 from pprint import pprint
 import matplotlib.pyplot as plt
@@ -16,8 +16,7 @@ def plot_frequency_curve(x_axis, y_axis, _plot_img=None, _title=None):
     :param _g: Transaction graph
     :param _plot_img: WCC size distribution image (log-log plot)
     :return:
-    """
-    
+    """    
     fig, axs = plt.subplots(2, 1, figsize=(14, 12))
 
     axs[0].plot(x_axis, y_axis)
@@ -46,25 +45,20 @@ def main():
     args = get_args()
     config = load_config(args)
 
-    # save config
-
     # load data
     for path in os.listdir(config['data']['processed_path']):
+        if path.startswith('.'):
+            continue
         # corpus_name 
-        file_prefix = get_file_name(path, last_seq=True)
+        print(path)
+        file_prefix = get_file_name(path, last_seq=False)
         img_output = 'freq-' + file_prefix + '.jpeg'
-        # img_output = ''.join('freq-', path.split('-')[1:])
-        path = get_processed_dir(path ,config)
-        word_rank = list()
-        word_freq = list()
-        with open(path, 'r', encoding='utf-8') as f:    
-            for line in f.readlines():
-                line = line.strip()
-                word, freq = line.split()
-                freq = int(freq)                
-                word_freq.append(freq)
-                
-        word_rank = [ i+1 for i in range(len(word_freq))]
+        path = get_processed_dir(path, config)
+       
+        sorted_dict = load_dict_from_json(path)
+        word_freq = [ int(v) for k,v in sorted_dict.items() ]
+        word_rank = [ i+1 for i in range(len(word_freq)) ]
+        
         plot_frequency_curve(x_axis=word_rank, 
                              y_axis=word_freq,
                              _plot_img=img_output,
