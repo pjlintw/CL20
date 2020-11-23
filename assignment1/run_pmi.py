@@ -28,7 +28,6 @@ def main():
     # corpus is expected to untokenized sentences
     corpus = load_txt(path, readlines=True)
     
-    
     # init dictionary for counting bigram and segment
     num_words = 0
     seg2freq = dict()
