@@ -19,20 +19,19 @@ def main():
     
     question_lst = list()
     for _ in range(total_ammount):
-
-        # random sample two digits
+        # random sample two numbers
         big_num = rdn.randint(0, 99)
-        first_digit = rdn.randint(0, big_num)
+        first_num = rdn.randint(0, big_num)
         
         # if True creating adddtion question, otherwise substraction 
         doPlus = bool(rdn.randint(0, 1))
         if doPlus:
-            second_digit = big_num - first_digit
-            line = '{} + {} = {}\n'.format(first_digit, second_digit, big_num)
+            second_num = big_num - first_num
+            line = '{} + {} = {}\n'.format(first_num, second_num, big_num)
             question_lst.append(line)
         else:
-            second_digit = big_num - first_digit
-            line = '{} - {} = {}\n'.format(big_num, first_digit, second_digit)
+            second_num = big_num - first_num
+            line = '{} - {} = {}\n'.format(big_num, first_num, second_num)
             question_lst.append(line)
     
     train_lst = question_lst[:num_question]
