@@ -22,7 +22,7 @@ File name should be distinguish since the file extension will be removed for cre
 
 `python build_zipf_data.py --config config-zipf.yml`
 
-the data will be saved under `/datasets/zipf/proceesed/` repository.
+Provides files `junglebook.txt`, `kingjamesbible_tokenized.txt`, `SETIMES.bg-tr.bg.txt` and `SETIMES.bg-tr.tr.txt` under the repository `/datasets/zipf/raw`. The processed data will be saved under `/datasets/zipf/proceesed/` repository.
 
 ### Step 2. Run zipf's law charts
 
@@ -34,12 +34,11 @@ the data will be saved under `/datasets/zipf/proceesed/` repository.
 
 `python build_ngram_data.py --config config-gram.yml`
 
-the data will be saved under `/datasets/ngram/proceesed/` repository.
+the command generates data saved under `/datasets/ngram/raw/` repository.
 
 ### Step 2. Run ngram model
 
 `python run_ngram.py --config config-ngram.yml.`
-
 
 # Statistical Dependence
 
@@ -47,5 +46,7 @@ the data will be saved under `/datasets/ngram/proceesed/` repository.
 
 `python run_pmi.py --config config-pmi.yml`
 
-
+we use the data from Yelp reviews `sentiment.dev.0` provided by
+https://github.com/lijuncen/Sentiment-and-Style-Transfer/tree/master/data/yelp .
+Please download it to `datasets/pmi/raw/`
 
