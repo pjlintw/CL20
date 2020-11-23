@@ -1,0 +1,8 @@
+seed: 4
+
+data:
+    raw_path: "datasets/ngram/raw/"
+    processed_path: "datasets/ngram/processed/"
+    num_step: 100
+    context_size: [2, 3, 4, 5]
+
