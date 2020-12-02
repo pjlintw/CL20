@@ -19,6 +19,7 @@ SEP = '[SEP]'
 
 def main():
     # config
+    # `python run_ngram --config config.yml`
     args = get_args()
     config = load_config(args)
 
