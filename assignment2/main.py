@@ -9,13 +9,8 @@ import os
 np.set_printoptions(formatter={'float': "{: 7.4f}".format})
 
 class HiddenMarkovTagger:
-    def __init__(self,
-                 data_dir, 
-                 train_file,
-                 eval_file=None,
-                 use_bigram=False,
-                 sample_from_distribution=False,
-                 random_first_token=False):
+    def __init__(self, data_dir, train_file, eval_file=None, use_bigram=False,
+                 sample_from_distribution=False, random_first_token=False):
         """Implement Hidden Markov Tagger.
 
         Args:
