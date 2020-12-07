@@ -16,7 +16,7 @@ The model uses annotated German datases `de-utb` and it's laoded by `ConllCorpus
 
 ## Run HMM tagger
 
-### Configuration
+### Configurate various HMM tagger for unknown words 
 
 We contruct a `HiddenMarkovTagger` class, which allow you to tranin and evaluate Bigram-based HMM tagger on CoNLL datasets.
 The tagger estimates an optimal sequence of tags by using Viterbi algorithm `_viterbi_searching()`.  The model uses 
@@ -42,7 +42,7 @@ hmm_tagger = HiddenMarkovTagger(data_dir=DATADIR,
                                 random_first_token=False)
 ```
 
-To train and evaluate: 
+### Train and Evaluate:
 
 `python main.py`
 

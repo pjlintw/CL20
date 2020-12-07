@@ -15,7 +15,7 @@ class HiddenMarkovTagger:
                  eval_file=None,
                  use_bigram=False,
                  sample_from_distribution=False,
-                 sample_first_tok=False):
+                 random_first_token=False):
         """Implement Hidden Markov Tagger.
 
         Args:
@@ -34,7 +34,7 @@ class HiddenMarkovTagger:
         self.sents = self.conllReader.sents()
         self.use_bigram = use_bigram
         self.sample_from_distribution = sample_from_distribution
-        self.sample_first_tok = sample_first_tok
+        self.random_first_token = random_first_token
         
     def train(self, do_eval=False, output_file='o.txt'):
         """Calculate the initial, transition and emission probability.
@@ -52,7 +52,7 @@ class HiddenMarkovTagger:
         if self.use_bigram:
             self.bigram = self._build_bigram()
 
-        if self.sample_first_tok:
+        if self.random_first_token:
             self.rdn = random.Random(50)
 
         # if true, do evalute
@@ -219,7 +219,7 @@ class HiddenMarkovTagger:
 
                 # ***Dealing unknown token***
                 if cur_tok not in self.tok2idx:
-                    if idx == 0 and self.sample_first_tok:
+                    if idx == 0 and self.random_first_token:
                         random_sent = self.rdn.choice(self.sents)
                         first_tok = random_sent[0][0]
                         tok_id = self.tok2idx[first_tok]
@@ -337,7 +337,7 @@ def main():
                                     eval_file=test_file,
                                     use_bigram=False,
                                     sample_from_distribution=False, 
-                                    sample_first_tok=False)
+                                    random_first_token=False)
     # Calculate the parameters
     start = time.time()
     hmm_tagger.train(do_eval=True, output_file='o.txt')
