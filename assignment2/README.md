@@ -7,8 +7,15 @@ the report is in `/reports/reports.pdf`
 
 ## Reproducing the result
 
+1. python version and dependencies 
+
 We uses python 3.7. Before execute file, please install the dependencies:
 `pip install -r requirements.txt`
+
+2. additional `models/ngram.py` for unknown word
+
+We use ngram model for replacing unknown word. Please use the script `ngram.py` in assignment 1 and 
+under a `models` folder from the importing in `main.py` .
 
 ## Data
 
