@@ -42,6 +42,7 @@ class HiddenMarkovTagger:
         self.init_probs, self.transition_probs, self.emission_probs = self._build()
         run_time_str = str(round(time.time()-2, 2))
         #print('Taking {} for traning'.format(run_time_str))
+        #print(self.tag2freq)
 
         # bigram smoothing
         if self.use_bigram:
