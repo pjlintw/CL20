@@ -61,3 +61,6 @@ hmm_tagger = HiddenMarkovTagger(data_dir=DATADIR,
 | HMM(bigram+randomFirstToken) | `True` | `True` | `False` | slow (9.3351) | 0.8513 |
 | HMM(sampleDistribution) | `False` | `False` | `True` | extremly slow (18.4848) | 0.8707 |
 | HMM(empirical) | `False` | `False` | `False` | **fast (6.8549)** | **0.8714** |
+
+### TO-do
+1. fix overestimating frequency of the transition condition
