@@ -19,6 +19,40 @@ def load_data(path):
     with open(path) as f:
         return f.readlines()
 
+def parse_fn(sentences):
+    """
+
+    Args:
+      sentences: () 
+    """
+    def _parse(sentence):
+        lower_sent = sentence.lower()
+        return lower_sent.strip().split()
+    for sent in sentences:
+        yield _parse(sent)
+
+def recognize(sent, grammar):
+    """CKY recognizer for one sentence
+
+    Args:
+      sent: list of tokens 
+      grammar:
+    Returns:
+      isInLanguage: boolean, if the sentence in the language
+    """
+    # Ch(i, k)
+    ch = list()
+
+    sent_len = len(sent)
+    print(sent)
+
+    ###
+    for tok_i in range(sent_len):
+        for prod_rule in grammar:
+            pass
+
+    #
+
 def main():
     import nltk
     from nltk.tree import Tree
@@ -35,15 +69,17 @@ def main():
     ###
     grammar_lst = load_data('toy_data/toy-grammar.txt')
     grammar_set = set([item.strip() for item in grammar_lst])
-    print('S -> NP VP'  in grammar_set)
-    print('NP -> Det N' in grammar_set)
-    print('VP -> V NP' in grammar_set)
-    print('V -> ate' in grammar_set)
-    print('NP -> john' in grammar_set)
-    print('Det -> a' in grammar_set)
-    print('N -> sandwich' in grammar_set)
 
+    test_sent = load_data('toy_data/toy-sentences.txt')
 
+    for sent in parse_fn(test_sent):
+        isInLanuage = recognize(sent, grammar_set)
+        print(isInLanuage)
+
+    size =3
+    chart = [[[] for _ in range(size) ] for _ in range(size)]
+    import numpy as np
+    print(np.array(chart).shape)
 
 if __name__ == '__main__':
     main()
