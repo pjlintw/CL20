@@ -1,10 +1,6 @@
 # CL20: Assignment 3
 
-This CKY parser for recognizing language and syntatic parsing. The algorithm based on a chart for recording 
-the nonterminal of a substring. 
-
-Feature: we construct a Node object as a Tree to record the root node and subnodes.
-It allows us to backtrace all previous nonterminal node until terminal symbol.
+This CKY parser desgins for recognizing language and syntatic parsing. The algorithm based on a chart for recording the nonterminal of a substring. We construct a Node object as a node (tree) to record the root node and subnodes. It allows us to backtrace all previous nonterminal node until terminal symbol.
 
 
 ## Setup and Data
@@ -31,7 +27,6 @@ production rule separating by arrow symbol `->` .
 
 `atis-test-sentences-draw.txt`.  The file consists of 5 sentencs which was randomly selected from ATIS test set for drawing parsing tree derived from the parser. 
 
-The sentences file consist 98 sentences from test set originally for ATIS grammar and 2 additional and ungrammatical sentences.
 
 ## Run CKY Parer
 
@@ -81,7 +76,7 @@ Trees: ['(SIGMA (NOUN_NNS "prices") (pt_char_per "."))', '(SIGMA (VERB_VBZ "pric
 The implementation of CKY parser supports to parse the ATIS sentences, compute the number of trees, and draw
 one tree for each test sentence.
 
-The example code will evaluate the CKY parser on the files provided by the flags `--count_tree`  and `--draw_tree`. A result file `result/output.txt` has the form of sentences and number of trees for each test sentences in the argument `--count_tree`. For plotting the parsing tree, the parser will plotting one of all possible trees for each test sentence from the file of `--draw_tree`. The plotting will be saved in the path `/img/`. 
+The example code will evaluate the CKY parser on the files provided by the flags `--count_tree`  and `--draw_tree`. A result file `result/output.txt` has the form of sentences and number of trees for each test sentence from the argument `--count_tree`. For plotting the parsing tree, the parser will plotting one of all possible trees for each test sentence from the file of `--draw_tree`. The plotting will be saved in the path `/img/`. 
 
 ```
 python main.py \
@@ -89,7 +84,7 @@ python main.py \
   --draw_tree=data/atis-test-sentences-draw.txt
 ```
 
-Note that the CKY parser will parse the `atis-test-sentences.txt` file for roughyl 9 minutes. We sugguest you to replace it with a smallar file `atis-test-sentences-draw.txt`. The grammar file `atis-grammar-cnf.cfg` is included in the code. The code will load the grammar.
+Note that the CKY parser will parse the `atis-test-sentences-100.txt` file for roughyl 9 minutes. We sugguest you to replace it with a smallar file `atis-test-sentences-draw.txt`. The grammar file `atis-grammar-cnf.cfg` is included in the code. The code will load the grammar.
 
 ```
 python main.py \
