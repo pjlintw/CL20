@@ -17,13 +17,13 @@ pp = pprint.PrettyPrinter(depth=4)
 
 
 def run_cky_wrapper(parser, sent_lst, output='output.o'):
-    """Evauluating CKY parser on list of sentence.
+    """Evauluating CKY parser on list of sentence and save 
+    the sentence and number of trees to output file.
 
     Args:
       parser: CKYParser object
       sent_lst: a list of sentence
       output: file with the form sentence and number
-    Returns:
     """
     output_folder = 'result'
     if not os.path.exists(output_folder):
@@ -47,17 +47,6 @@ def run_cky_wrapper(parser, sent_lst, output='output.o'):
     print(f'Create file to path: {output_path}')
     print(f'Parsing {num_sent} sentences for {time.time()-start} secs.')
     print(f'Saving file to {output_path}')
-
-    
-    # t = Tree.fromstring('(S (NP this tree) (VP (V is) (AdjP pretty)))')
-    #  TreeView(t)._cframe.print_to_file('output.ps')
-        
-    # sent_str = ' '.join([ tok.replace('\"', '') for tok in sent])
-        # if isInLanuage:
-    #     print(f'sentence, \"{sent_str}\", in language')
-    # else:
-    #     print(f'sentence, \"{sent_str}\", not in language')
-    #     print(sys_info)
 
 
 def run_tree_drawer(parser, sent_lst, show=False, output_folder='img'):
@@ -92,8 +81,8 @@ def main():
     parser.add_argument("--draw_tree")
     args = parser.parse_args()
 
-    # grammar file
-    grammar_file = 'atis/atis-grammar-cnf.cfg'
+    # Grammar file
+    grammar_file = 'data/atis-grammar-cnf.cfg'
 
     # Load grammar from file
     grammar, _ = create_product_rule(grammar_file)
@@ -101,14 +90,15 @@ def main():
     # Construct CKYParser from grammar
     parser = CKYParser(grammar)
 
-    # write sentence and its number of trees to file 
-    # the parser will recognize sentence if not in grammar or in lanugage    
+    # Write sentence and its number of trees to file 
+    # The parser will recognize sentence if 
+    # not in grammar or in lanugage.
     if args.count_tree:
         file_path = args.count_tree
         test_sent = load_data(file_path)
         run_cky_wrapper(parser=parser, sent_lst=test_sent)
 
-    # # draw parsing tree and save image to path `/img/.`
+    # Draw parsing tree and save image to path `/img/.`
     if args.draw_tree:
         file_path = args.draw_tree
         test_sent = load_data(file_path)
