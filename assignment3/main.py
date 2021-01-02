@@ -8,9 +8,10 @@ Feature: we construct a Node object as a Tree to record the root node and subnod
 It allows us to backtrace all previous nonterminal node until terminal symbol.
 """
 import os
-import argparse
 import pprint
-
+import argparse
+from nltk.tree import Tree
+from nltk.draw.tree import TreeView
 from parser import *
 
 pp = pprint.PrettyPrinter(depth=4)

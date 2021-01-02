@@ -1,12 +1,11 @@
+"""Implement CKYParser class to parse the sentence and backtrace the tree. """
+
 import os
 import time
 
-from nltk.tree import Tree
-from nltk.draw.tree import TreeView
-
 
 def load_data(path):
-    """Load file with each sentence in the line."""
+    """Load text file with one sentence per line."""
     with open(path) as f:
         return f.readlines()
 
@@ -15,58 +14,44 @@ def create_product_rule(path):
     """Create grammar for terminal and non-terminal in CNF.
 
     Args:
-      path: path to production rules in CNF.
+      path: path to the file of production rules in CNF.
 
-    Examples:   
+    Returns:
+      rule_dict: A dict mapping keys to the corresponding productions. For example:
+          
+      :production rules:
+      SIGMA  -> QUANP_DTI CJC
+      NP_NNS -> QUANP_DTI CJC
 
-    terminal rule: {'"token1"':（[0.5, 0.5], ['NP', 'SIGMA']),
-                    '"token2"': ([1.0]     , ['V']          )}
-    nonterminal rule: {'Det N': ([1.0]     , ['NP']         ),
-                       'V NP' : ([1.0]     , ['VP']         )'}
-
-    toks:  ['tok1', 'tok2', 'tok3']
-    chart: [ [{}, {}, {}]
-             [{}, {}, {}]
-             [{}, {}, {}]]
-
-    we collect the nonterminal symbols for tokens and substring.
-    chart[i][j] represents its nontermial and can access its 
-    token or the two subnodes by the nonterminal key.
-            chart[i][j][A]: [(BC, k_1), (BC, k_2)]
-    backpointers: 
-
+      {'QUANP_DTI|CJC': ['SIGMA', 'NP_NNS'], '"gave"': ['pt_verb_vbd', 'VERB_VBD']}
+          
+      Returned keys are production rule or token.Values are the its nonterminal symbols.  
     """
     def add_rule_to_dict(rule_dict, lhs, rhs):
-        """Add production rule to (non-)terminal rule dictionary.
+        """Add production rule to dictionary.
+
+        Add production rule and nonterminal to dict
+        if don't have the key.
 
         Args:
-          rule_dict: dict, mapping terminal symbol or two nonterminal o one nonterminal
-          lhs: rule of right hand site
-          rhs: rule of left hand site
+          rule_dict: dict, mapping terminal symbol or production rule
+                     to nonterminal
+          lhs: rule of right hand side
+          rhs: rule of left hand side
+
         Returns:
-          rele_dict: the left-hand-sided to right-hand-sided term mapping.
-
-          :production rules:
-          SIGMA  -> QUANP_DTI CJC
-          NP_NNS -> QUANP_DTI CJC
-
-            {'QUANP_DTI|CJC': ['SIGMA', 'NP_NNS'], '"gave"': ['pt_verb_vbd', 'VERB_VBD']}
+          rule_dict: a updated dict
         """
         if rhs not in rule_dict:
             rule_dict[rhs] = list()
-            
         rule_dict[rhs].append(lhs)           
         return rule_dict
 
-    # grammar {'"token1"': ['V', 'SIGMA'], 'V|NP': ['VP']}
     grammar = dict()
-    nonterminal_symbol = set()
     for line in load_data(path):
         lhs, rhs = line.split('->')
         lhs, rhs = lhs.strip(), rhs.strip()
         rhs = [ tok for tok in rhs.split() if tok !='']
-        # add nonterminal symbol
-        nonterminal_symbol.add(lhs)
         if len(rhs) == 1:
             tok = rhs[0]
             assert '\"' in tok
@@ -76,17 +61,19 @@ def create_product_rule(path):
             jointed_rhs = '|'.join(rhs)
             # add production rule
             add_rule_to_dict(grammar, lhs, jointed_rhs)
-            #print(grammar)
         else:
             print('production rule not in CNF', line)
-    return grammar, nonterminal_symbol
+    return grammar # grammar {'"token1"': ['V', 'SIGMA'], 'V|NP': ['VP']}
 
 
 def parse_fn(sentences):
-    """Preprocessing sentences of list. 
+    """Preprocessing list of sentences. 
+
+    Remove the leading and trailing whitespaces 
+    and add double quote to each token.
 
     Args:
-      sentences:
+      sentences: list of sentences
     """
     def _parse(sentence):
         lower_sent = sentence.lower()
@@ -101,8 +88,8 @@ def parse_fn(sentences):
 class Node:
     """a Node class represents tree."""
     def __init__(self, root, left, right, end):
-        """Consturct a node of substree with root, left, right,
-        and terminal symbol variable.
+        """Consturct a node object to build a substree 
+        with root, left, right and terminal symbol variables.
 
         Args:
           root: string, a root node of tree
@@ -128,6 +115,7 @@ class CKYParser:
 
         Args:
           sent: tokens of list
+          grammar: A dict of production rule or token to nonterminal mapping
         Returns:
           isInGrammar: boolean, if the grammar covers the sentence
         """
@@ -160,12 +148,12 @@ class CKYParser:
 
         
     def build_trees_from_node(self, roots):
-        """Build tree from 
+        """Build tree from a given node.
 
         Args:
-          roots: 
+          roots: the possible nonterminal of whole string in the chart.
         Returns:
-          tree_lst: list of tree in string.
+          tree_lst: a collection of tree in string format.
         """
         trees = [prod for prod in roots if prod._root == 'SIGMA']
 
@@ -179,23 +167,24 @@ class CKYParser:
         """CKY parse for a sentence with chart.
 
         Args:
-          sent: list of tokens 
-          grammar:
+          sent: list of tokens added by double quote
+          grammar: production rule and token to nonterminal mapping
 
         Returns:
-          chart: 3D lists,
+          chart: A 3-D lists that collects all nonterminal symbol
+          for all possible subtrings of a sentence. Chart[i][j]
+          represents its nontermial and can hash its 
+          token or the production rules by the nonterminal key.
+          For example:            
+
+          chart[i][j][A]: [(BC, k_1), (BC, k_2)]
         """
         sent_len = len(sent)
         # Chart with shape (n+1, n+1)
-        # Each cell in chart[i][k] keeps one or more than one non-terminal symbol representing a substring
-        # sentence[i][k] represents a list of substring from i to k-1.
+        # Each cell in chart[i][j] keeps one or more than one non-terminal symbol representing a substring
+        # sentence[i][j] represents a list of substring from i to j-1.
         chart = [ [ set() for _ in range(sent_len+1)] for _ in range(sent_len+1)]
-        # back_chart = [ [ defaultdict(lambda: list()) for _ in range(sent_len+1)] for _ in range(sent_len+1)]
         
-        # span 1: (0,1), (1,2), ..., (n-1,n) 
-        # span 2: (0,2), (1,3), ..., (n-2,n)
-        # span n, (0,n)
-
         ### labels terminal symbols (token) with chart ###
         for i in range(sent_len):
             tok = sent[i]
@@ -205,8 +194,7 @@ class CKYParser:
                 # key(str): [token(str)]
                 for nonterm in nonterms:
                     chart[i][i+1].add(Node(nonterm, None, None, tok))
-                    
-        
+                        
         ### labels substring with length from 2 to sentence length ###
         # span 2: [john|ate](0:1+1), [ate|a](1:2+1), [a|sandwitch](3:3+1)
         for span in range(2, sent_len+1):
@@ -236,9 +224,10 @@ class CKYParser:
         """Recursively backtracing a parsing tree starting from an Node object.
 
         Args:
-          root_node: Node object. 
+          root_node: Node object
         Returns:
-          string, parsing tree can be construct a nltk.Tree object
+          string, parsing tree in string format which 
+          can be construct a nltk.Tree object
         """
         if root_node._terminal != None:
             return f'({root_node._root} {root_node._terminal})'
