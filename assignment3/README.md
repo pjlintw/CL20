@@ -97,7 +97,7 @@ We visualize the runtime of executing backtracking and without executing. The x-
 The plotting shows that the most time-consuming part is the production process. In the future, we will optimize the runtime by constructing the bottom up parsing 
 with other implementation. 
 
-!()[`img/Figure_1.png`]
+!(plot)[img/Figure_1.png]
 
 To plot the figure, run the `run_comparison.py` in the command line. Note that the program runs on the 100 sentences file. It will take 9 minutes for parsing all the possible trees of sentences.
 
