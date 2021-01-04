@@ -86,7 +86,7 @@ def main():
     grammar_file = 'data/atis-grammar-cnf.cfg'
 
     # Load grammar from file
-    grammar, _ = create_product_rule(grammar_file)
+    grammar = create_product_rule(grammar_file)
 
     # Construct CKYParser from grammar
     parser = CKYParser(grammar)

@@ -16,10 +16,9 @@ The implementation utilise grammar file and sentence file under the `data` folde
 
 ### grammar
 
-The CKY parser designs for the grammar which has Chomsky normal (CNF), i.e. all production rules are of the form A -> B C, or A -> "token".
+The CKY parser is designed for the grammar which has Chomsky normal (CNF), i.e. all production rules are of the form A -> B C, or A -> "token". Please make sure the grammar file `atis-grammar-original.cfg` is under the `data` folder.
 
-We use the ATIS grammar in CNF. Each line of the grammar file is a
-production rule separating by arrow symbol `->` .
+The ATIS grammar in CNF is the file that each line of the grammar contains a production rule separating by arrow symbol `->`  and one nonterminal symbol on left hand side.
 
 ### sentence
 
@@ -89,5 +88,20 @@ Note that the CKY parser will parse the `atis-test-sentences-100.txt` file for r
 ```
 python main.py \
   --count_tree=data/atis-test-sentences-draw.txt
+```
+
+### Runtime with and without backtracking
+
+We visualize the runtime of executing backtracking and without executing. The x-axis is number of trees and y-axis runtime in the unit of second. The plotting shows no difference because the implementation of cky parser stores every substree in the chart. For example, left hand side nontermial A will be seen as different subtree in the chart if one of its children nodes or grandchildren is another nontermial symbol. Therefore, we can directly compute the number of `SIGMA` in the node for the whole sequence without doing backtracing. 
+
+The plotting shows that the most time-consuming part is the production process. In the future, we will optimize the runtime by constructing the bottom up parsing 
+with other implementation. 
+
+!()[`img/Figure_1.png`]
+
+To plot the figure, run the `run_comparison.py` in the command line. Note that the program runs on the 100 sentences file. It will take 9 minutes for parsing all the possible trees of sentences.
+
+```
+python run_comparison.py
 ```
 
