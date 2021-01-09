@@ -7,7 +7,8 @@ def em(sent_pair, config):
     """Implementation of EM for IBM Model 1.
 
     Args:
-      sent_pair: a pair of source and target sentence
+      sent_pair: A list of sentence pairs.
+                `(source_sentence, )`
     Returns:
       alignment: sequence of soruce-target alignment separate by space
     """
