@@ -1,15 +1,43 @@
 """Implementation of IBM model 1 aligner."""
-
+import argparse
 from collections import defaultdict
 
 em_config = {'iteration':10000}
 
-def em(sent_pairs, config):
+parser = argparse.ArgumentParser()
+parser.add_argument('-d', '--data', dest='train', default='hw2/data/hansards')
+parser.add_argument('-e', '--english', dest='english', default='e') # target
+parser.add_argument('-f', '--french', dest='french' , default='f') # source
+parser.add_argument('-n', '--number', dest='num_sents', default=100)
+args = parser.parse_args()
+
+
+class Bitexter:
+    def __init__(self, f_data, e_data, num_sents=100):
+        self.f_data = f_data
+        self.e_data = e_data
+        self.num_sents = num_sents
+    
+    def yield_pairs(self):
+        with open(self.f_data, 'r') as f_file, open(self.e_data) as e_file:
+            num_example = 0
+            for f_sent, e_sent in zip(f_file, e_file):
+                num_example +=1
+                if num_example == self.num_sents:
+                    print('example', num_example)
+                    break
+                yield self.parse_sentence(f_sent), self.parse_sentence(e_sent)
+    
+    def parse_sentence(self, sentence):
+        return sentence.strip().split()
+
+
+def em(sentence_generator, config):
     """Implementation of EM for IBM Model 1.
 
     Args:
-      sent_pairs: A list of sentence pairs.
-                `(source_sentence, )`
+      sentence_generator: A list of sentence pairs.
+                          `(source_sentence, )`
     Returns:
       alignment: sequence of soruce-target alignment separate by space
     """
@@ -30,7 +58,7 @@ def em(sent_pairs, config):
         count_src = defaultdict(lambda: 0)
 
         # E-Step
-        for sent_pair in sent_pairs:
+        for sent_pair in sentence_generator:
             src_sent = sent_pair[0].strip().split()
             tgt_sent = sent_pair[1].strip().split()
 
@@ -97,16 +125,24 @@ def search_alignment(sent_pairs, prob=None):
         alignments.append(sentence_alignment)
     return alignments
     
+def run_expectation_maximization():
+    pass
+
+
 def main():
+    f_data = "%s.%s" % (args.train, args.french)
+    e_data = "%s.%s" % (args.train, args.english)
+
     # sent_pair = ('B C', 'X Y')
 
     # List of sentence pairs
     sent_pairs = [ ('B C', 'X Y'), ('B', 'Y')]
 
-    prob = em(sent_pairs, em_config)
-    
-    aligns = search_alignment(sent_pairs, prob)
-    print(aligns)
+    data = Bitexter(f_data, e_data, 10)
+    prob = em(data, em_config)
+    print(prob)
+    #aligns = search_alignment(sent_pairs, prob)
+
 
 if __name__ == '__main__':
     main()
