@@ -14,13 +14,14 @@ We uses python 3.7. Before execute file, please install the dependencies:
 The implementation utilise sentence files under the `hw2/data/` folder. 
 Make sure those files (`hansards.f`, `hansards.a`, `hansards.e`) are included.
 
-### File structure 
+### Results Files 
 
 We test the original baseline model and compare our IBM model 1 with another implemenation and IBM model 2 `fast_align` to check their performances.
+All the file are collected in `results`.
 
-* `dice.a`: Evaluating result for baseline model.
+* `results/dice.a`: Evaluating result of baseline model.
 * `results/myIBM-#k`: Evaluating result of our IBM model 1.
-* `results/dice-#k.a`: Evaluating result of another IBM model implementation. 
+* `results/dice-#k.a`: Evaluating result of another IBM model 1 implementation. 
 * `results/reverse-#k.align`: Evaluating result of `fast_align` .
 
 ## Run the aligner
@@ -52,7 +53,7 @@ python score-alignments < myIBM-1k
 
 We compare our implementation with other on 1000, 3000 and 500k sentence pairs. It gives similar results between the two implementations.
 
-![alt text](/img/img1.png)
+![alt text](./img/img1.png)
 
 
 ### Compare with `fast_align`
@@ -61,11 +62,6 @@ We evaluates our IBM model 1 with the second version of model `fast_align` on di
 
 Both models perform better when increasing training examples. The `fast_align` can achieve the 28 accuracy with only 1000 examples but our IBM model requires 8x examples. In the recall score, the `fast_align` on 1k, 3k, 5k and 8k are not as good as its precision.   
 
-![alt text](/img/img2.png)
+![alt text](./img/img2.png)
 
 
-
-
-
-
-![alt text](/img/img2.png)
