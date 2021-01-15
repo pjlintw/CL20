@@ -1,7 +1,6 @@
 # CL20: Assignment 4
 
-The IBM model aligner
-
+Implementation og the IBM model aligner. We build a IBM model 1 to align English-French setence pair. We compare the implementation model with other model 1 implementation and `fast_align` on the hardsards parallel sentences.
 
 ## Setup and Data
 
@@ -12,98 +11,61 @@ We uses python 3.7. Before execute file, please install the dependencies:
 
 2. prepare data
 
-The implementation utilise grammar file and sentence file under the `data` folder. Make sure those files are included.
+The implementation utilise sentence files under the `hw2/data/` folder. 
+Make sure those files (`hansards.f`, `hansards.a`, `hansards.e`) are included.
 
-### grammar
+### File structure 
 
-The CKY parser is designed for the grammar which has Chomsky normal (CNF), i.e. all production rules are of the form A -> B C, or A -> "token". Please make sure the grammar file `atis-grammar-original.cfg` is under the `data` folder.
+We test the original baseline model and compare our IBM model 1 with another implemenation and IBM model 2 `fast_align` to check their performances.
 
-The ATIS grammar in CNF is the file that each line of the grammar contains a production rule separating by arrow symbol `->`  and one nonterminal symbol on left hand side.
+* `dice.a`: Evaluating result for baseline model.
+* `results/myIBM-#k`: Evaluating result of our IBM model 1.
+* `results/dice-#k.a`: Evaluating result of another IBM model implementation. 
+* `results/reverse-#k.align`: Evaluating result of `fast_align` .
 
-### sentence
-
-`atis-test-sentences-100.txt`.  The sentences file consists of 100 sentences for testing parser. 98 sentences are from test set of for ATIS grammar and 2 additional are ungrammatical sentences.
-
-`atis-test-sentences-draw.txt`.  The file consists of 5 sentencs which was randomly selected from ATIS test set for drawing parsing tree derived from the parser. 
-
-
-## Run aligner
+## Run the aligner
 
 ### Basic Usage
 
-The CKYParser performs sentence parsing, tree building in the script `demo.py`.
+Our aligner provides simialr arguments for user 
 
 ```
-python demo.py
+python run_aligner.py -n 10000 > myIBM-1k
 ```
 
-```python
-# Load grammar from file
-grammar, _ = create_product_rule(grammar_file)
-
-# Construct CKYParser from grammar
-parser = CKYParser(grammar)
-
-# Check grammar covers tokens
-sentence = ['\"prices\"', '\".\"']
-isInGrammar = CKYParser.check_coverage(sentence, grammar)
-
-# All nonterminal results
-roots = parser.parse(sentence)
-
-# Check sentence 
-isInLanguage = parser.recognize(sentence)
-
-# Creat a tree in string format
-tree_list = parser.build_trees_from_node(roots)
-
-# Output
-print('In the grammar :', isInGrammar)
-print('In the language:', isInLanguage)
-print('Trees:', tree_list)
+The file `myIBM-1k` will have 1000 aligments examples:
+```
+0-9 1-21 2-9 3-9 4-9 5-9 6-9 7-9 8-14 9-8 10-9
+0-1 1-1 2-1 3-1 4-1 5-1 6-1 7-1 8-1 9-1 10-4 
+...
+...
 ```
 
-The output will look like this:
+### Evaluate the result
+
+For evaluate the result, you should use `score-alignments`. We uses the scripts for all the experiements we have tried.
 ```
-In the grammar : True
-In the language: True
-Trees: ['(SIGMA (NOUN_NNS "prices") (pt_char_per "."))', '(SIGMA (VERB_VBZ "prices") (pt_char_per "."))']
-```
-
-### Evaluating CKY parser on ATIS sentences 
-
-The implementation of CKY parser supports to parse the ATIS sentences, compute the number of trees, and draw
-one tree for each test sentence.
-
-The example code will evaluate the CKY parser on the files provided by the flags `--count_tree`  and `--draw_tree`. A result file `result/output.txt` has the form of sentences and number of trees for each test sentence from the argument `--count_tree`. For plotting the parsing tree, the parser will plotting one of all possible trees for each test sentence from the file of `--draw_tree`. The plotting will be saved in the path `/img/`. 
-
-```
-python main.py \
-  --count_tree=data/atis-test-sentences-100.txt \
-  --draw_tree=data/atis-test-sentences-draw.txt
+python score-alignments < myIBM-1k
 ```
 
-Note that the CKY parser will parse the `atis-test-sentences-100.txt` file for roughyl 9 minutes. We sugguest you to replace it with a smallar file `atis-test-sentences-draw.txt`. The grammar file `atis-grammar-cnf.cfg` is included in the code. The code will load the grammar.
+### Compare with other Implemenation 
 
-```
-python main.py \
-  --count_tree=data/atis-test-sentences-draw.txt
-```
+We compare our implementation with other on 1000, 3000 and 500k sentence pairs. It gives similar results between the two implementations.
 
-### Runtime with and without backtracking
-
-We visualize the runtime of backtracking and without backtracking. The x-axis is number of trees and y-axis runtime in the unit of second. The plotting shows no difference because the implementation of cky parser stores every individual substree in the chart. For example, left hand side nontermial A will be seen as different subtree in the chart if one of its children nodes or grandchildren is another nontermial symbol. Therefore, we can directly compute the number of `SIGMA` in the set of possible nodes for the whole sequence without doing backtracing. 
-
-The plotting shows that the most time-consuming part is the production process and executing backtracing makes no different. In the future, we will optimize the runtime by constructing the bottom up parsing 
-with other implementation. 
+![alt text](/img/img1.png)
 
 
-<img src="img/Figure_1.png" width="550" height='550'>
+### Compare with `fast_align`
 
-To plot the figure, run the `run_comparison.py` in the command line. Note that the program runs on the 100 sentences file. It will take 9 minutes for parsing all the possible trees of sentences.
+We evaluates our IBM model 1 with the second version of model `fast_align` on different scale datasets. We set the iteration 1 and train them on 10000, 30000, 50000, 80000 sentence pairs. 
 
-```
-python run_comparison.py
-```
+Both models perform better when increasing training examples. The `fast_align` can achieve the 28 accuracy with only 1000 examples but our IBM model requires 8x examples. In the recall score, the `fast_align` on 1k, 3k, 5k and 8k are not as good as its precision.   
+
+![alt text](/img/img2.png)
 
 
+
+
+
+
+![alt text](/img/img2.png)
