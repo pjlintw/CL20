@@ -79,4 +79,4 @@ We visualize the a aligments example from our implemenation and the baseline.
 
 Alignments (our)             |  Alignment (other)
 :-------------------------:|:-------------------------:
-![](./img/img3-align33-our.png)  |  ![](./img/img3-align33-baseline.png)
+![](./img/img3-align33-our.png)  |  ![](./img/img4-align33-baseline.png)
