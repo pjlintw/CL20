@@ -88,7 +88,6 @@ def run_expectation_maximization(bitext, config):
         # E-Step
         for sent_pair in bitext.yield_pairs():
             src_sent, tgt_sent = sent_pair
-
             num_src = len(src_sent)
             num_tgt = len(tgt_sent)
             for i in range(num_tgt):
@@ -105,6 +104,7 @@ def run_expectation_maximization(bitext, config):
                     src_word = src_sent[j]
                     tgt_word = tgt_sent[i]
                     k = (src_word,tgt_word)
+                    # Normalize
                     c = ef_prob[k] / denominator_z 
                     count_src_tgt[k] += c
                     count_src[src_word] += c
@@ -127,7 +127,6 @@ def search_alignment(bitext, prob=None):
         sentence_alignment = list()
         num_src = len(src_sent)
         num_tgt = len(tgt_sent)
-        # print(num_tgt)
         for i in range(num_tgt):
             best_prob = 0
             best_j = 0
