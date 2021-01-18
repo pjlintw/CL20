@@ -1,5 +1,8 @@
 """Latent Dirichlet Allocation using Gibbs sampling algorithm."""
 
+class lda_samppler:
+    def __init__(self):
+        return None
 
 
 
