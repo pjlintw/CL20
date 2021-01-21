@@ -271,6 +271,18 @@ dist_zv
 
 # (n_doc, n_toc): document and topic co-occurs
 dist_dz
+
+
+# Gibb sampling: re-sampling new Z for each word 
+for doc in M
+  for idx, w in doc
+    z = Z[(doc, doc[w])]
+    ndz[d, z] -= 1
+    nzw[z,w] -= 1
+    nz[z] -= 1
+    
+
+
 """
 ### note ##
 
