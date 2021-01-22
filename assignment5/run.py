@@ -55,8 +55,6 @@ class LdaSampler(object):
     def _initialize(self, matrix):
         n_docs, vocab_size = matrix.shape
 
-        # number of times document m and topic z co-occur
-        self.nmz = np.zeros((n_docs, self.n_topics))
         # number of times topic z and word w co-occur
         self.nzw = np.zeros((self.n_topics, vocab_size))
         self.nm = np.zeros(n_docs)
@@ -134,7 +132,7 @@ class LdaSampler(object):
 
                     # (n_topic)
                     p_z = self._conditional_distribution(m, w)
-                    print('p_z', p_z.shape)
+                    #print('p_z', p_z.shape)
                     z = sample_index(p_z)
 
                     self.nmz[m,z] += 1
@@ -191,13 +189,13 @@ if __name__ == "__main__":
         # (n_topics, vocab_size)
         m = np.zeros((n_topics, int(vocab_size)))
 
-        print('width', width)
-        print('m shape before', m.shape)
+        # print('width', width)
+        # print('m shape before', m.shape)
         for k in range(int(width)):
-            print('k',k)
+            # print('k',k)
             m[k,:] = vertical_topic(width, k, document_length)
-        print(m)
-        print('m shape after', m.shape)
+        # print(m)
+        # print('m shape after', m.shape)
 
         for k in range(int(width)):
             m[k+width,:] = horizontal_topic(width, k, document_length)
@@ -246,8 +244,6 @@ if __name__ == "__main__":
     matrix = gen_documents(word_dist, N_TOPICS, vocab_size)
     sampler = LdaSampler(N_TOPICS)
 
-    print(word_dist.shape)
-
     for it, phi in enumerate(sampler.run(matrix)):
         print("Iteration", it)
         print("Likelihood", sampler.loglikelihood())
@@ -280,8 +276,6 @@ for doc in M
     ndz[d, z] -= 1
     nzw[z,w] -= 1
     nz[z] -= 1
-    
-
 
 """
 ### note ##
