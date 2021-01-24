@@ -1,0 +1,14 @@
+05:33:45,91 root INFO Running LDA
+06:17:27,564 __main__ INFO Saved model: zw-iteration100.npz
+07:49:03,534 __main__ INFO Saved model: zw-iteration200.npz
+12:10:30,547 __main__ INFO Saved model: zw-iteration300.npz
+12:53:30,133 __main__ INFO Saved model: zw-iteration400.npz
+13:36:28,549 __main__ INFO Saved model: zw-iteration500.npz
+13:57:40,391 root INFO Running LDA
+16:05:24,835 root INFO Running LDA
+17:42:14,51 root INFO Running LDA
+17:42:14,75 root INFO sdkosdo
+17:43:10,119 root INFO Running LDA
+17:43:10,145 root INFO sdkosdo
+17:44:09,49 root INFO Running LDA
+17:44:09,75 __main__ INFO sdkosdo
