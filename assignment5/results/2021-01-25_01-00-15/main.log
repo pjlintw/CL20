@@ -1,0 +1,11 @@
+01:00:15,579 root INFO Running LDA
+01:35:17,992 __main__ INFO Saved model: zw-iteration100.npz
+01:35:17,994 __main__ INFO Saved model: mz-iteration100.npz
+02:08:21,819 __main__ INFO Saved model: zw-iteration200.npz
+02:08:21,821 __main__ INFO Saved model: mz-iteration200.npz
+02:41:25,859 __main__ INFO Saved model: zw-iteration300.npz
+02:41:25,860 __main__ INFO Saved model: mz-iteration300.npz
+03:14:23,12 __main__ INFO Saved model: zw-iteration400.npz
+03:14:23,14 __main__ INFO Saved model: mz-iteration400.npz
+03:47:21,137 __main__ INFO Saved model: zw-iteration500.npz
+03:47:21,138 __main__ INFO Saved model: mz-iteration500.npz

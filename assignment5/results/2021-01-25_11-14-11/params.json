@@ -1,0 +1,11 @@
+{
+    "alpha": 25,
+    "beta": 0.1,
+    "doc_path": "data/movies-pp.txt",
+    "model_path": "results/2021-01-25_11-14-11",
+    "n_iteration": 500,
+    "n_topic": 20,
+    "save_per_iteration": 100,
+    "top_k": 10,
+    "vocab_path": "data/vocab.txt"
+}

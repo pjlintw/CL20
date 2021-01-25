@@ -162,7 +162,7 @@ class LDA:
 
         # Normalize. (n_topic,)
         z_dist /= np.sum(z_dist)
-        
+    
         return z_dist
 
     def run(self, input_fn, iteration=50, save_per_iteration=None):
@@ -282,13 +282,13 @@ class LDA:
 def main():
     # Params
     params = {
-        'alpha': 0.02,
+        'alpha': 25,
         'beta': 0.1,
         'n_iteration': 500,
         'n_topic': 20,
         'top_k': 10,
         'save_per_iteration': 100,
-        'doc_path': 'data/movies-pp.txt', 
+        'doc_path': 'data/movies-pp-20.txt', 
         'vocab_path': 'data/vocab.txt',     
         'model_path': 'results'  # all files will be savied here
     }
@@ -307,7 +307,7 @@ def main():
     logger = create_logger(params['model_path'])
 
 
-    # a: 0.02, beta: 0.1
+    # alpha: 0.02, beta: 0.1
     model = LDA(n_topic=params['n_topic'],
                 doc_path=params['doc_path'],
                 vocab_path=params['vocab_path'],
