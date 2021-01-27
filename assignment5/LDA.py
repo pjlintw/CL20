@@ -186,7 +186,7 @@ class LDA:
                     z = self.topic_dict[(m_idx, w_idx)]
                     self.n_mz[m_idx, z] -= 1              
                     self.n_m[m_idx] -= 1     
-                    self.n_zw[z,w] -=1  ###
+                    self.n_zw[z,w] -=1 
                     self.n_z[z] -= 1
 
                     # Estimate topic distribution

@@ -49,7 +49,7 @@ def plot_top_words(topic_words, word_scores, title):
 
 
 if __name__ == '__main__':
-  visual_path = Path('./results/firstExperiment/out.word')
+  visual_path = Path('./results/2021-01-25_01-00-15/out.word')
   topic_words, word_scores = load_k_word(visual_path)
   plot_top_words(topic_words, word_scores, title='Topics in LDA')
 
