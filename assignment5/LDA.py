@@ -1,6 +1,6 @@
 """Latent Dirichlet Allocation using Gibbs sampling algorithm.
 
-Note: In the implementation, we uses `z` as topic instead of `z_i` or `t`. 
+Note: we uses `z` as topic instead of `z_i` or `t`. 
 And `m` for document index. 
 """
 import os, datetime
@@ -20,7 +20,7 @@ from time import sleep
 def create_logger(model_path):
     """Create logger.
 
-    Args: str, path for `.log` file
+    Args: str, path for log file
     """
     logname = os.path.join(model_path, 'main.log')
     Path('results').mkdir(exist_ok=True)
@@ -52,7 +52,7 @@ def file_generator(path, return_idx=False):
 
 
 class LDA:
-    def __init__(self, n_topic, doc_path, vocab_path, model_path, logger, alpha=0.1, beta=0.1):
+    def __init__(self, n_topic, doc_path, vocab_path, model_path, logger, alpha=0.02, beta=0.1):
         """Construct Latent Dirichlet Allocation using Gibbs sampling.
 
         Args:
@@ -67,7 +67,7 @@ class LDA:
         >>> n_topic = 20
         >>> data = np.array([[13, 1, 0], [3, 2, 0]])
         >>> model = LDA(n_topic)
-        >>> model.run()
+        >>> model.run(input_fn, iteration=50, save_per_iteration=100)
         """
         self.n_topic = n_topic
         self.alpha = alpha
@@ -205,7 +205,7 @@ class LDA:
             if save_per_iteration is not None and (it+1) % save_per_iteration == 0:
                 ### topic-word matrix: zw ###
                 # Add None to axis 1 for broadcasting
-                # `zw_logit`: (n_topic. vocab_size) + scalar /
+                # `zw_logit`: (n_topic, vocab_size) + scalar /
                 #             (n_topic, None      ) + scalar * scalar
                 # (n_topic, vocab_size)
                 zw_logit = ( self.n_zw + self.beta) / \
@@ -262,11 +262,30 @@ class LDA:
 
     def _get_top_k(self, top_k):
         """Search most k frequent words from topic-vocab matrix.
-
+        
+        Args:
+          top_k: K most frequent words to be selected
+        
         Returns:
-          k_freq_word: 2D array, shape (n_topic, top_k)
+          k_word_idx: 2D array, shape (n_topic, top_k), indies of k words.
+          k_word_logit: 2D array, shape (n_topic, top_k), logits of k words.
+        
+        Examples:
+
+        >>> k = 2
+        >>> self.n_zw
+        [[10,  8, 1],
+         [32, 11,20]]
+
+        >>> k_word_idx, k_word_logit = self._get_top_k(k)
+        >>> k_word_idx
+        [[0, 1],
+         [0, 2]]
+
+        >>> k_word_logit
+        [[10, 8],
+         [32,20]]
         """
-        # print('n_zw', self.n_zw)
         # Indices that would sort an array in ascending order
         # Shape (n_topic, vocab_size) 
         indices_mat = self.n_zw.argsort(axis=1)

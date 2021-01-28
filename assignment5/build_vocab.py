@@ -6,15 +6,15 @@ from collections import Counter
 from pathlib import Path
 
 if __name__ == '__main__':
-
+    # Document file
     doc_file = './movies-pp.txt'
     
+    # Count frequency
     counter_word = Counter()
     with Path(doc_file).open() as f:
         for line in f:
             counter_word.update(line.strip().split())
     
-    #print(vocab_word)
     # Write file
     with Path('vocab.txt').open('w') as f:
         for w, c in counter_word.most_common():

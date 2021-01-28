@@ -128,8 +128,6 @@ if __name__ == '__main__':
     np_file = 'zw-iteration500.npz'
     zw = np.load(np_file)['arr_0']
 
-
-
     # Get list of cosine similarity score
     baseline_word = 'film'
     compare_words = ['film', 'movie', 'video', 'cinema', 'theater', 
@@ -146,8 +144,6 @@ if __name__ == '__main__':
     print(compare_lst)
 
     # print(get_k_label(zw, id2word, k=1))
-
-    
 
     # Get k most similar words by cosine similarity
     baseline_word = 'film'

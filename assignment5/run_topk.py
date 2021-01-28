@@ -22,7 +22,7 @@ def load_k_word(w_word_file):
   return topic_words, word_scores
       
 
-def plot_top_words(topic_words, word_scores, title):
+def plot_top_words(topic_words, word_scores, title, output_name):
     fig, axes = plt.subplots(4, 5, figsize=(30, 15), sharex=True)
     axes = axes.flatten()
 
@@ -44,14 +44,17 @@ def plot_top_words(topic_words, word_scores, title):
         fig.suptitle(title, fontsize=40)
 
     plt.subplots_adjust(top=0.90, bottom=0.05, wspace=0.90, hspace=0.3)
-    plt.savefig('123.png')
+    plt.savefig('./images/{}.png'.format(output_name))
 
 
 
 if __name__ == '__main__':
-  visual_path = Path('./results/2021-01-25_01-00-15/out.word')
+  # version 1: 2021-01-25_01-00-15
+  # version 2: 2021-01-25_11-14-11
+  result_folder = '2021-01-25_01-00-15'
+  visual_path = Path('./results/{}/out.word'.format(result_folder))
   topic_words, word_scores = load_k_word(visual_path)
-  plot_top_words(topic_words, word_scores, title='Topics in LDA')
+  plot_top_words(topic_words, word_scores, title='Topics in LDA', output_name=result_folder)
 
 
 

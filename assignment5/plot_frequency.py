@@ -1,5 +1,4 @@
-
-"""Plot word frequency in document file."""
+"""Plot word frequency of document file."""
 
 from pathlib import Path
 from collections import Counter
@@ -14,11 +13,15 @@ if __name__ == '__main__':
     with Path(doc_file).open() as f:
         for line in f:
             line = line.strip()
-            # Skip
+            # Skip first line
             if line == '2000':
                 continue
             word_lst = line.split()
             c.update(word_lst)
+    
+    with open('data/frequent-word.txt', 'w') as f:
+        for w, freq in c.most_common():
+            f.write(f'{w} {str(freq)}\n')
             
     # Plot
     f, ax = plt.subplots(figsize=(10,5))
@@ -30,7 +33,7 @@ if __name__ == '__main__':
     plt.ylabel('Frequency')
     plt.title('Top 300 Word Frequency')
     plt.legend(loc=2)
-    plt.savefig('wordFrequency-300.png')
+    plt.savefig('images/wordFrequency-300.png')
 
 
 
