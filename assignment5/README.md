@@ -173,8 +173,8 @@ The two topics learn collecting most frequent words in the movie reviews. We cou
 
 The most frequent words in topic 11 and 13 are mostly from the high frequent words in the movie reviews. We list most 20 frequent words in the file bellow. The most frequent 6 words in the topic 13 are the most 6 frequent words in the movies reviews. Topic 11 does not have same frequency order as topic 13. But they covers 14 frequent words out of most 20 frequent words in the reviews.
 
-```text
-1. `**`film`**` 9443
+```python
+1. **film** 9443
 2. **movie** 5671
 3. **one** 5580
 4. **like** 3545
