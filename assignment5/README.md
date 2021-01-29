@@ -2,12 +2,6 @@
 
 Topic modeling: Latent Dirichlet Allocation using Gibbs sampling. The Implementation of LDA model automatically discovers topics that documents contain. The model was trained on 2000 movie views with 20 topics and 500 iterations.
 
-
-## To-Do
-1. LDA and Gibbs sampling
-2. Most frequent word
-3. Report 
-
 ## File structure 
 
 ```
@@ -114,13 +108,16 @@ python run_topk.py
 
 ## Results
 
-We run the LDA model in two hyperparameter settings and analysis the learned `topic-word` matrix. We found that the LDA model trained with default hyperparameter assigns movie relevant words to latent topics in the firs result. But as we modity `alpha`, the most frequent words in the topic seems don't have specific meaning. Finnaly, we can compute word similarity using the learned matrix. 
+We run the LDA model in two hyperparameter settings and analysis the learned `topic-word` matrix in the optimal one. We found that the LDA model trained with default hyperparameter assigns movie relevant words to latent topics and can easily observe meaningful topic, such as words related to `horroric film` or particular film `star trek`. While implementing the LDA model, we curious the sampling frequency for `top-word` matrix. Therefore, we export the corresponding frequency for each word in the top and uses the matrix as distributed representation for computing word similarity. 
+
+For the second LDA model, only modifying `alpha=50`, the most frequent words in the topic seems don't have specific meaning. The outline of results and discussions as fellows: 
 
 * Optimial LDA
-* Alpla-20 LDA model
+* Alpla-25 LDA model
 * Analysis word distribution over topics
 
 Note: the bold text is the words selected in the latent topics.
+
 
 ### Optimal LDA  
 
@@ -144,25 +141,25 @@ We observe 11 topics in the result trained on default setting:
 
 **Movie characters (topic 1)** are mostly charactor, like **batman**, **godzilla**, **arnold schwarzenegger**. This is the only one we found related to character in the movies. Most topics are related to particular movie or genre. For intance, the frequent words in **Space science (topic 4)** are related to **star trek**, such as **alien**, **aliens**, **planet**, **wars**, **space**, **mars**, **planets**.
 
-Similar topics like **Boogie nights (topic 5)**, **The wedding singer (topic 12)**, **Martials art (topic 14)**, **Disney animation (topic 15)** and **Pulp fiction (topic 20)** are the topics for specific movie or animation:  **Boogie nights (topic 5)** is period drama film directed by Paul Thomas **Anderson** and the story is in the late 1970s **disco** era. **The wedding singer (topic 12)** is **romantic comedy** film produced by **Robert Somonds**. In the film, a wedding singer (Adam **Sandler**) meets and befriends *Julia* and later fall in love with each other.
+Similar topics like **Boogie nights (topic 5)**, **The wedding singer (topic 12)**, **Martials art (topic 14)**, **Disney animation (topic 15)** and **Pulp fiction (topic 20)** are the topics for specific movie or animation:  **Boogie nights (topic 5)** is period drama film directed by Paul Thomas **Anderson** and the story is in the late 1970s **disco** era. **The wedding singer (topic 12)** is **romantic comedy** film produced by **Robert Somonds**. In the film, a wedding singer (Adam **Sandler**) meets and befriends **Julia** and later fall in love with each other.
 
-In addition, **Martial arts (topic 12)** is about the **hong kong martial** artist **Jackie Chan** and his **action** movie. **Disney animation (topic 15)** is a topic for **disney animation**, such as the **animated** movie **Titanic** and **Mulan**. **Crime films directed by Tarantino (topic 20)** is another topic for the crime films directed by Quantin **Tarantino**, such as **Pulp fictions** and **Jackie Brown**.
+In addition, **Martial arts (topic 12)** is about the **hong kong martial** artist **Jackie Chan** and his **action** movie. **Disney animation (topic 15)** is a topic for **disney animation**, such as the **animated** movie **Titanic** and **Mulan**. **Crime films directed by Tarantino (topic 20)** is another topic for the crime films directed by Quantin **Tarantino**, such as **pulp fictions** and **Jackie Brown**.
 
-The other move-revelant topics like **Planet of the Apes (topic 2)** and **Shakespeare (topic 19)** have words related to the film or to Shakespeare's works.
+The other move-revelant topics like **Planet of the Apes (topic 2)** and **Shakespeare (topic 19)** have frequent words related to the film or to Shakespeare's works.
 
 There is a **Horroric film (topic 18)** topic for horroric words, such as **horror**, **scream**, **killer**, **vampire**, **scary**, **vampires** and **slasher**.
 
-**Frequent words (topic 11, 13)** are a special case in our result. The frequent words in theses topics have higher frequencise than the words in the other topics. The most frequent words in other topics (`2021-01-25_01-00-15/out.word`) have the ammount under one thousand on averag. But most frequent words were highly sampled and assigned to tipic 11 and topic 13.
+**Frequent words (topic 11, 13)** are a special case in our result. The frequent words in theses topics have higher frequencise than the words in the other topics. Most frequent words in other topics (`2021-01-25_01-00-15/out.word`) have the ammount under one thousand on averag. But words in topic 11 and 13  were highly sampled.
 
-The two topics learn collecting most frequent words in the movie articles. We count the word frequency by running the script `plot_frequency.py`. It writes vocabulary file with frequency `data/frequent-wrod.txt` and plot the top 300 frequent words bar chart saved in data folder `data/wordFrequency-3000.png`.
+The two topics learn collecting most frequent words in the movie reviews. We count the word frequency by running the script `plot_frequency.py`. It writes vocabulary file with frequency `data/frequent-wrod.txt` and plot the top 300 frequent words bar chart saved in data folder `data/wordFrequency-3000.png`.
 
 ![alt text](./images/wordFrequency-300.png)
-*We plot top 30 frequent words in movie reviews out of 46517 words. A few words have the dominant frequency than other word.*
+*We plot top 300 frequent words in movie reviews out of 46517 words. A few words have the dominant frequency than other words.*
 
-The most frequent words in topic 11 and 13 are mostly from the high frequent words in the movie reviews. We list most 20 frequent words in the file bellow. The most frequent 6 words in the topic 13 are the most 6 frequent words in the movies reviews. Topic 11 does not have same frequency order as topic 13. But they covers 14 frequent words out of most 20 words in the file.
+The most frequent words in topic 11 and 13 are mostly from the high frequent words in the movie reviews. We list most 20 frequent words in the file bellow. The most frequent 6 words in the topic 13 are the most 6 frequent words in the movies reviews. Topic 11 does not have same frequency order as topic 13. But they covers 14 frequent words out of most 20 frequent words in the reviews.
 
 ```text
-1. **film** 9443
+1. `**`film`**` 9443
 2. **movie** 5671
 3. **one** 5580
 4. **like** 3545
@@ -186,19 +183,19 @@ The most frequent words in topic 11 and 13 are mostly from the high frequent wor
 
 The sampling frequency in the default setting has huge unbalanced phenomena between topic 11, 13 and the other. We are curious about using other hypermeter to observe the smapling frequency and latent topic modeling. Thus, we tried to trained the LDA model by modifying `alpha` as bellow. 
 
-### Alpla-20 LDA model
+### Alpla-25 LDA model
 
 ![alt text](./images/2021-01-25_11-14-11.png)
-*Figure 2. The second figure shows the model ran in the same setting but using `alpha=50`. All the other hyperparameters are same as previous one.*
+*Figure 2. The second figure shows the model ran in the same setting but using `alpha=25`. All the other hyperparameters are same as previous one.*
 
+The high frequent words in the movie reviews, such as `film`, `movie`, `good`, `like` and `one`, occur in this result. But they are not in a topic group. We can not even find any group that has inner similarity between their frequent words as in previous result.
 
-The high frequent word in the movie reviews, such as `film`, `movie`, `good`, `like` and `one`, occur in our result. But they are not in a topic group. 
-
-And we can not even find any group that has inner similarity between their frequent words.
-
+Although the sampling frequency are more balanced in term of comparing with tpoics which has relative higher frequencies  , like topic 11, 13 in previous result. It wasn't assigned simialr words to one particular topic. We still curious if there is relation between sampling frequency or topic modeling. We are planing to observe more sucecessful exmaples to see if similar phenomena when word frequencies are high unbalanced.
 
 
 ### Analyse the word distribution over 20 topics 
+
+We make the assumption based on the latent variable distribution. If words has similar latent distribution, they may be similar meaning. And we can treat word as an `n` dimensional vecotr (n_topics).
 
 We utilise the learned matrix to by computing words similarity.
 
