@@ -1,44 +1,9 @@
+""""""
 
-"""
-positive_content(y)
-
-
-cycleGAN for baysian
-p(y|x) ~= p(x|y)p(y)
-
-langaugePrior(y) = score
-x -> p(x) -> y -> p(y) -> x 
-
-I love moive -> Ich habe Hunger -> hi hi hi
-
-enc(pos) = h_j
-enc(neg) = h_i
-
-
-c(h) -> [0-1]
-
-p(x, y) = p(y|x)p(x)
-
-I hate watching   movie
-|   |     |          |
-I  love watching  moive
-
-p(x,y) = p(y|x) = p(x|y)p(y)
-     
-      p(x_char|y)p(y)
-
-       word1 word2 word3
-word1 [                 ]
-word2 [                 ]
-word3 [                 ]
-
-p(word3|word1, word2) = weight_decay * p(w3|w2) * p(w3|w2)
-"""
 import numpy as np
 from numpy import dot
 from numpy.linalg import norm
 from pathlib import Path
-
 from pprint import pprint
 from functools import partial
 
@@ -49,14 +14,6 @@ def load_vocab(file):
         word2id = dict([ (w.strip(),i) for i, w in enumerate(f)])
     id2word = { v:k for k,v in word2id.items()}
     return word2id, id2word
-
-
-def get_k_label(zw_matrix, id2word, k=1):
-    """Get k labels from highest probability."""
-    n_row, n_col = zw.shape
-
-    z = zw_matrix
-    print(z.sum(axis=1))
 
 
 def cosine_similarity(v1, v2):
@@ -77,7 +34,7 @@ def get_most_similar_k_word(baseline_word, k, zw_matrix, score_fn, word2id, id2w
         v2 = zw[:, col_idx]
         score = cos_sim_fn(v2=v2)
         cos_sim_arr[col_idx] = score   
-    #
+    # Indices matrix
     most_sim_word_indices = cos_sim_arr.argsort()[-k:][::-1]
     # Map index into word
     k_word_lst = [ id2word[w_idx] for w_idx in  most_sim_word_indices]
@@ -89,6 +46,15 @@ def get_most_similar_k_word(baseline_word, k, zw_matrix, score_fn, word2id, id2w
     # (k,). Each element is (word, score)
     k_word_score_lst = list(zip(k_word_lst, score_arr))
     return k_word_score_lst
+
+
+def print_most_k_word(k_word_score_lst, baseline_word, top_k):
+    """List the similar k words."""
+    print('Baseline word: {}'.format(baseline_word))
+    for i in range(top_k):
+        w, cos_sim = k_word_score_lst[i]
+        s = f'{w:>10} {cos_sim:.5}'
+        print('{} most similar word:'.format(i+1), s)
 
 
 def compare_similarity(baseline_word, compare_word_lst, zw_matrix, score_fn, word2id, id2word):
@@ -119,14 +85,17 @@ def compare_similarity(baseline_word, compare_word_lst, zw_matrix, score_fn, wor
 
 
 if __name__ == '__main__':
-    
+    # Result folder
+    result_folder = 'results/2021-01-25_01-00-15'
+
     # Load mapping dict
-    word2id, id2word = load_vocab('vocab.txt')
+    vocab_file = 'data/vocab.txt' 
+    word2id, id2word = load_vocab(vocab_file)
     vocab_size = len(word2id)
 
     # Load topic word matrix
     np_file = 'zw-iteration500.npz'
-    zw = np.load(np_file)['arr_0']
+    zw = np.load(Path(result_folder,np_file))['arr_0']
 
     # Get list of cosine similarity score
     baseline_word = 'film'
@@ -140,18 +109,68 @@ if __name__ == '__main__':
                                     score_fn=cosine_similarity,
                                     word2id=word2id,
                                     id2word=id2word)
-    print(f'Similarity between `{baseline_word}`')
-    print(compare_lst)
+    joint_str = ', '.join(compare_words)
+    print(f'Similarity between `{baseline_word}` and \n`{joint_str}`')
+    for i in range(len(compare_words)):
+        w, cos_sim = compare_lst[i]
+        s = f'{w:>10} {cos_sim:.5}'
+        print('{} most similar word:'.format(i+1), s)
+    print()
 
-    # print(get_k_label(zw, id2word, k=1))
 
+
+    # Get list of cosine similarity score
+    baseline_word = 'julia'
+    compare_words = ['james', 'bond', 'tarantino', 'john', 'stanley', 
+                     'hospital', 'nurse', 'patient', 'thief',
+                     'actress', 'casting']
+    
+    compare_lst = compare_similarity(baseline_word=baseline_word, 
+                                    compare_word_lst=compare_words, 
+                                    zw_matrix=zw, 
+                                    score_fn=cosine_similarity,
+                                    word2id=word2id,
+                                    id2word=id2word)
+    joint_str = ', '.join(compare_words)
+    print(f'Similarity between `{baseline_word}` and \n`{joint_str}`')
+    for i in range(len(compare_words)):
+        w, cos_sim = compare_lst[i]
+        s = f'{w:>10} {cos_sim:.5}'
+        print('{} most similar word:'.format(i+1), s)
+    print()
+
+
+
+    # `film`, 'happy', 'vampir', 'comedy', 'killer'
     # Get k most similar words by cosine similarity
-    baseline_word = 'film'
+    baseline_word = 'killer'
+    top_k = 10
     k_word_score_lst = get_most_similar_k_word(baseline_word=baseline_word, 
-                                               k=5, 
+                                               k=top_k, 
                                                zw_matrix=zw, 
                                                score_fn=cosine_similarity,
                                                word2id=word2id,
                                                id2word=id2word)
-    print(k_word_score_lst)
+    print_most_k_word(k_word_score_lst, baseline_word, top_k=top_k)
+    print()
+
+
+    # Get k most similar words by cosine similarity
+    baseline_word = 'crime'
+    top_k = 10
+    k_word_score_lst = get_most_similar_k_word(baseline_word=baseline_word, 
+                                               k=top_k, 
+                                               zw_matrix=zw, 
+                                               score_fn=cosine_similarity,
+                                               word2id=word2id,
+                                               id2word=id2word)
+    print_most_k_word(k_word_score_lst, baseline_word, top_k=top_k)
+
+
+
+
+
+
+
+
 
