@@ -301,7 +301,7 @@ class LDA:
 def main():
     # Params
     params = {
-        'alpha': 25,
+        'alpha': 0.02,
         'beta': 0.1,
         'n_iteration': 500,
         'n_topic': 20,
