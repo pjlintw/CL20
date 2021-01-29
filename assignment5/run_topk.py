@@ -1,3 +1,4 @@
+"""Plot top k frequent word for each topic."""
 
 from pathlib import Path
 import matplotlib.pyplot as plt

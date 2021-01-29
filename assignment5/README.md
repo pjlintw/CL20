@@ -243,7 +243,7 @@ Similarity between `film` and
 11 most similar word:    casting 0.896
 ```
 
-It is surprisingly good to have obvious similarty socres betwenn relevant words and irrelevant words. Except for `film` itself, `movie`, `theater`, `actress`, `casting` do have high similarity with the `film` vector. Although  there is words `video`, `cinema` that does not have high score. But the irrelevant words `hospital`, `nurse`, `patient`, `thief` do really have pretty low similarty with `film`.
+It is surprisingly good to have obvious similarty socres between relevant words and irrelevant words. Except for `film` itself, `movie`, `theater`, `actress`, `casting` do have high similarity with the `film` vector. Although  there is words `video`, `cinema` that does not have high score. But the irrelevant words `hospital`, `nurse`, `patient`, `thief` do really have pretty low similarty with `film`.
 
 
 We further try other word to compare their similarty. But we dones't find such nice result again. One example is that we use `julia` as baseline word and replace the relevant words with `james`, `bond`, `tarantino`, `john`, `stanley`. 
@@ -264,7 +264,7 @@ Similarity between `julia` and
 11 most similar word:    casting 0.027603
 ```
 
-In general, no matters relevant or irrelevant words in the list. The consine similarity between baseline word and other wasn't able to be classifiable by the socre. In the next part, we want to reduce prior knowledge for listing relevant or irrelevant words. We find most k similar words by fiting one baseline word.
+In general, no matters relevant or irrelevant words in the list. The consine similarity between baseline word and other wasn't able to be classifiable by the score. In the next part, we want to reduce prior knowledge for listing relevant or irrelevant words. We find most k similar words by fiting one baseline word.
 
 
 Before we found interesting results, we have tried words like `film`, `happy`, `vampir`, `comedy`. The most similar words for these word are totally irrelevant. We then use more negative words as baseline since we were guessing negatvie words could more likely be a cluster. Because once one mention a negative words in the document, other will appear soon in the context.
@@ -305,4 +305,4 @@ Baseline word: crime
 
 The most similar words for `crime` were `gangster` and `criminal`. In the case, it is more like a topic. Because `feds`, `bars`, `shootout`, `giancarlo` (actor of crime drama series) aren't not directly having same meaning as `crime` . It is not interchangeable words or synonym.
 
-In summary, the LDA model are able to learn movie topics as latent variables but requires carefully hyperparameter tuning. It can sometimes learns distributed representation for words. But it doesn't always effective for all similar word pairs or synonym. Most of times needs to try out repeatedly for finding one good example, although some of them seems like pretty well distributed representations like word2vec or glove. In term of computation, the cost for representation learning is expensive. One can quickly learn the representations by applying other representation-oriented algorithm. 
+In summary, the LDA model are able to learn movie topics as latent variables but requires carefully hyperparameter tuning. It can sometimes learns distributed representation for words. But it doesn't always effective for all similar word pairs or synonym. Most of times needs to try out repeatedly for finding one good example, although some of them seems like pretty well distributed representations like word2vec or glove. In term of computation, the cost for representation learning is expensive. One can quickly learn the representations by applying co-occurrence matrix calculation or word2vec. 

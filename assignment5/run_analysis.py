@@ -1,4 +1,4 @@
-""""""
+"""Using the normalised topic-word matrix as word representations."""
 
 import numpy as np
 from numpy import dot
