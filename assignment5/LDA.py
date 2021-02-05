@@ -274,6 +274,8 @@ class LDA:
 
         >>> k = 2
         >>> self.n_zw
+        # row-wise index
+        #  0   1  2
         [[10,  8, 1],
          [32, 11,20]]
 

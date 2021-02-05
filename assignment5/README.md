@@ -2,6 +2,7 @@
 
 Topic modeling: Latent Dirichlet Allocation using Gibbs sampling. The Implementation of LDA model automatically discovers topics that documents contain. The model was trained on 2000 movie views with 20 topics and 500 iterations.
 
+
 ## File structure 
 
 ```
@@ -306,3 +307,12 @@ Baseline word: crime
 The most similar words for `crime` were `gangster` and `criminal`. In the case, it is more like a topic. Because `feds`, `bars`, `shootout`, `giancarlo` (actor of crime drama series) aren't not directly having same meaning as `crime` . It is not interchangeable words or synonym.
 
 In summary, the LDA model are able to learn movie topics as latent variables but requires carefully hyperparameter tuning. It can sometimes learns distributed representation for words. But it doesn't always effective for all similar word pairs or synonym. Most of times needs to try out repeatedly for finding one good example, although some of them seems like pretty well distributed representations like word2vec or glove. In term of computation, the cost for representation learning is expensive. One can quickly learn the representations by applying co-occurrence matrix calculation or word2vec. 
+
+## Rewriting
+* Frequent words in the sampled topic are generic movie review words
+* Some topics may not be meaningful
+
+## Things you can do with LDA
+* NN after the probabilistic model v.s. NN from scratch
+* LDA for Mafia moive over time
+
