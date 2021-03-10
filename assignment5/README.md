@@ -3,7 +3,7 @@
 Topic modeling: Latent Dirichlet Allocation using Gibbs sampling. The Implementation of LDA model automatically discovers topics that documents contain. The model was trained on 2000 movie views with 20 topics and 500 iterations.
 
 
-## File structure 
+## File Structure 
 
 ```
 |--data
