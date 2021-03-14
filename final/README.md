@@ -9,7 +9,7 @@ Note that these phrases need not be linguistically meaningful constituents.
 
 ## Features
 * Word alignment
-* Phrase extraction
+* Phrase Table Extraction
 * Scoring phrses
 * Beams-search
 * BLEU score Evaluation
@@ -18,16 +18,26 @@ Note that these phrases need not be linguistically meaningful constituents.
 
 ```
 |--data
-|  |-- frequent-word.txt
-|  └-- vocab.txt
+|  |-- alignments
+|  |   |-- IBM1.alignment.it1
+|  |   |-- IBM1.alignment.it10
+|  |   |-- IBM1.alignment.it20
+|  |   └-- IBM1.alignment.it30
+|  | 
+|  |-- hansards
+|  |   |-- hansards.a
+|  |   |-- hansards.f
+|  |   |-- hansards.e
+|  |
+|  |-- phease.txt
+|  |-- lm.log-prob
+|  └-- phrase.log-prob
 |
-|-- images
-|   |-- 2021-01-25_01-00-15.png  # topic visualization for optimal model
-|   |-- 2021-01-25_11-14-11.png  # topic visualization for Alpha-25 model
-|   └-- wordFrequency-300.png
-|
+
 |-- report
-|   └── report.pdf
+|   |-- img
+|   |   └---- IMAGE-FOR-REPORT
+|   └── reports.pdf
 |
 |-- results
 |-- build_vocab.py
@@ -107,17 +117,29 @@ For the translation model, it extracts all the possible phrases as a **phrase tr
 
 The phrase-based model trained to estimate the conditional probability for a sentence in target sentence given a sentence in foreign language. The file will be saved in the folder.
 
-To train and save the final conditional probability, you need to pass the word aligment file.
-The scripts will train \
+The script estimates log probabilities of p(f|e) of the tranlsation model. To train and save the final conditional probability, you need to pass the word aligment file. 
+```
+python phrase_translator.py \
+  --source_file data/hansards.f \
+  --target_file data/hansards/hansards.e \
+  --align_file data/alignments/IBM1.alignment.it30 \
+  --save_phrase_table data/phrase.txt \
+  --output_file data/phrase.log-prob
+```
+
+If the command could not found the argument, **Make sure** that you passes the variables to the options correctly.
+You will get the result in the command prompt.
 
 ```
-python train_phrase_model
-   --word_align FILE \
-   --
-   --
-   --
+Saving phrase file to path: data/phrase.txt.
+Saving phrase log probability file to path: data/phrase.log-prob.
 ```
 
+The `phrase.log-prob.` file
+
+```
+Saving phrase log probability file to path: data/phrase.log-prob.
+```
 
 
 ## Translate the French sentence
