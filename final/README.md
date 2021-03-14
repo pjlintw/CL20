@@ -55,7 +55,8 @@ To execute the program install the dependencies:
 
 The implementation uses the sentence files under the `data/hansards/` folder. 
 Make sure these files (`hansards.f`, `hansards.a`, `hansards.e`) are included.
-#(We use `score-alignments` for calculating precision, recall and alignment error rate.)
+
+#We use `score-alignments` for calculating precision, recall and alignment error rate.
 
 Phrased based translation model extracts all possible phrases from the word-to-word alignments \
 and tained on these file. We obtained the word aligment files by running our IBM model 1.
